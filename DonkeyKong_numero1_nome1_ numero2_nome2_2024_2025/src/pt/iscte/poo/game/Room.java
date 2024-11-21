@@ -19,6 +19,7 @@ public class Room {
 	private Point2D heroStartingPosition = new Point2D(3, 1);
 	private Manel manel;
 	private String level;
+	private String[][] matrixRoom = new String[10][10];
 	
 	public Room() {
 		manel = new Manel(heroStartingPosition);
@@ -29,6 +30,9 @@ public class Room {
 	}
 
 	public void moveManel(Direction d) {
+		if(manel.getPosition().getX()==0){
+
+		}
 		manel.move(d);
 	}
 
