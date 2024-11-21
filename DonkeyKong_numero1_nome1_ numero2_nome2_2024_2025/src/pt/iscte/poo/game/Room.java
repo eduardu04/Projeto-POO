@@ -50,6 +50,16 @@ public class Room {
 					ImageGUI.getInstance().addImage(imagem);
 
 				}
+				if(letras.charAt(i)=='S'){
+					imagem = new Stairs(vectorIndexToCoordenate(i));
+					ImageGUI.getInstance().addImage(imagem);
+
+				}
+				if(letras.charAt(i)=='t'){
+					imagem = new Trap(vectorIndexToCoordenate(i));
+					ImageGUI.getInstance().addImage(imagem);
+
+				}
 			}
 			
 			
