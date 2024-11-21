@@ -4,10 +4,12 @@ import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.observer.Observed;
 import pt.iscte.poo.observer.Observer;
 import pt.iscte.poo.utils.Direction;
+import java.io.File;
 
 public class GameEngine implements Observer {
+
 	
-	private Room currentRoom = new Room();
+	private Room currentRoom = Room.readRoomFile(new File("rooms/room0.txt"));
 	private int lastTickProcessed = 0;
 	
 	public GameEngine() {
@@ -22,7 +24,7 @@ public class GameEngine implements Observer {
 			System.out.println("Keypressed " + k);
 			if (Direction.isDirection(k)) {
 				System.out.println("Direction! ");
-				currentRoom.moveManel();
+				currentRoom.moveManel(Direction.directionFor(k));
 			}
 		}
 		int t = ImageGUI.getInstance().getTicks();
