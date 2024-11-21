@@ -25,7 +25,7 @@ public class Manel implements ImageTile {
 	@Override
 	public int getLayer() {
 		// TODO Auto-generated method stub
-		return 1;
+		return 2;
 	}
 //Alterei e pus parametro Direction
 	public void move(Direction d) {

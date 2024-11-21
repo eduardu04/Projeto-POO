@@ -4,8 +4,10 @@ import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Point2D;
 
 public class Wall implements ImageTile{
+	private Point2D position;
 
-	public Wall() {
+	public Wall(Point2D initialPosition) {
+		position=initialPosition;
 	}
 
 	@Override
@@ -20,7 +22,7 @@ public class Wall implements ImageTile{
 
 	@Override
 	public Point2D getPosition() {
-		return new Point2D(5, 5);
+		return position;
 	}
 
 	
