@@ -1,0 +1,968 @@
+format 222
+"UMLClassesProjetoPOO"
+  revision 3
+  modified_by 73 "eduardocarvalho"
+
+
+  
+  // class settings
+  default_attribute_visibility private default_relation_visibility private default_operation_visibility public
+  
+  classdiagramsettings draw_all_relations yes hide_attributes no hide_operations no hide_getset_operations no hide_ports no show_members_full_definition yes show_members_visibility no show_members_stereotype yes show_members_context no show_members_multiplicity no show_members_initialization no show_attribute_modifiers no member_max_width 127 show_parameter_dir yes show_parameter_name yes package_name_in_tab no class_drawing_mode natural drawing_language uml show_context_mode no auto_label_position yes show_relation_modifiers no show_relation_visibility no show_infonote no shadow yes gradient none show_stereotype_properties no end
+  
+  classcompositediagramsettings auto_label_position yes draw_all_relations yes shadow yes gradient none end
+  
+  usecasediagramsettings package_name_in_tab no show_context_mode no auto_label_position yes draw_all_relations yes class_drawing_mode actor shadow yes gradient none show_stereotype_properties no end
+  
+  sequencediagramsettings show_full_operations_definition no show_class_of_operation no write_horizontally yes instances_drawing_mode natural drawing_language uml draw_all_relations yes shadow yes gradient none show_stereotype_properties no show_class_context_mode no show_msg_context_mode no end
+  
+  collaborationdiagramsettings show_full_operations_definition no show_class_of_operation no show_hierarchical_rank no write_horizontally yes instances_drawing_mode natural drawing_language uml package_name_in_tab no show_class_pack_context_mode no show_msg_context_mode no draw_all_relations yes shadow yes gradient none show_stereotype_properties no end
+  
+  objectdiagramsettings write_horizontally yes package_name_in_tab no show_class_pack_context_mode no auto_label_position yes draw_all_relations yes shadow yes gradient none show_stereotype_properties no end
+  
+  objectcompositediagramsettings auto_label_position yes draw_all_relations yes shadow yes gradient none end
+  
+  componentdiagramsettings package_name_in_tab no show_context_mode no auto_label_position yes draw_all_relations yes shadow yes gradient none
+   draw_component_as_icon no show_component_req_prov no show_component_rea no show_stereotype_properties no end
+  
+  deploymentdiagramsettings package_name_in_tab no show_context_mode no write_horizontally yes auto_label_position yes draw_all_relations yes shadow yes gradient none
+   draw_component_as_icon no show_component_req_prov no show_component_rea no show_stereotype_properties no end
+  
+  statediagramsettings package_name_in_tab no show_context_mode no auto_label_position yes write_label_horizontally yes show_trans_definition no draw_all_relations yes shadow yes gradient none
+   show_activities yes region_horizontally yes drawing_language uml show_stereotype_properties no end
+  
+  activitydiagramsettings package_name_in_tab no show_context_mode no show_opaque_action_definition no auto_label_position yes write_label_horizontally no draw_all_relations yes shadow yes gradient none
+   show_infonote yes drawing_language uml show_stereotype_properties no end
+  
+  class_color yellow duration_color transparent continuation_color gray note_color blue fragment_color transparent subject_color transparent usecase_color yellow package_color transparent component_color green artifact_color green deploymentnode_color gray state_color yellow stateaction_color transparent activity_color transparent activityregion_color transparent activitypartition_color transparent activityaction_color transparent parameterpin_color white generalization_color black 
+  dpi 72
+  font_size 13
+  diagram_format A4
+
+  image_root_dir ""
+
+
+  mark_for_import
+  
+  classview 128073 "UMLView"
+    
+    classdiagramsettings member_max_width 0 end
+    
+    classcompositediagramsettings end
+    
+    collaborationdiagramsettings end
+    
+    objectdiagramsettings end
+    
+    objectcompositediagramsettings end
+    
+    sequencediagramsettings end
+    
+    statediagramsettings
+     end
+    
+    
+    activitydiagramsettings
+     end
+    classdiagram 128073 "UMLView"
+      classdiagramsettings member_max_width 0 end
+      size B-Landscape
+    end
+
+    class 128073 "GameEngine"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 128073 // <generalisation>
+	relation 128073 ---|>
+	  a public
+	    classrelation_ref 128073 // <generalisation>
+	  b parent class_ref 128201 // Observer
+      end
+
+      operation 128201 "update"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "source" type class_ref 128713 // Observed
+	
+	
+	
+	
+	
+      end
+
+      operation 128329 "processTick"
+	public explicit_return_type "void"
+	nparams 0
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 128201 "Observer"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      operation 128073 "update"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "source" type class_ref 128713 // Observed
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 128329 "Room"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+    end
+
+    class 128457 "Main"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+    end
+
+    class 128585 "ImageGUI"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      attribute 129097 "TICK_TIME"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 129225 "INSTANCE"
+	private type class_ref 128585 // ImageGUI
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 128969 "LABEL_HEIGHT"
+	class_attribute private explicit_type "int"
+	init_value "20"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      classrelation 128969 // <generalisation>
+	relation 128969 ---|>
+	  a public
+	    classrelation_ref 128969 // <generalisation>
+	  b parent class_ref 128713 // Observed
+      end
+
+      attribute 135881 "IMAGE_DIR"
+	private explicit_type "String"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 136009 "titleWidth"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 136137 "titleHeight"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 136265 "width"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 136393 "height"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 136521 "frame"
+	private explicit_type "JFrame"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 136649 "panel"
+	private explicit_type "JPanel"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 136777 "info"
+	private explicit_type "JLabel"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 136905 "imageDB"
+	private explicit_type "Map<String, ImageIcon>"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 137033 "images"
+	private explicit_type "List<ImageTile>"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 137161 "mouseClicked"
+	private explicit_type "boolean"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 137289 "lastKeyPressed"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 137417 "keyPressed"
+	private explicit_type "boolean"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 137545 "windowClosed"
+	private explicit_type "boolean"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 137673 "maxLevel"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 137801 "keywatcher"
+	private explicit_type "KeyWatcher"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 137929 "ticker"
+	private explicit_type "Ticker"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 138057 "ticks"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      operation 138313 "getInstance"
+	class_operation public return_type class_ref 128585 // ImageGUI
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 138441 "setName"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "name" explicit_type "String"
+	
+	
+	
+	
+	
+      end
+
+      operation 138569 "init"
+	public explicit_return_type "void"
+	nparams 0
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 128713 "Observed"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      attribute 135753 "observers"
+	private explicit_type "List<Observer>"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      operation 137929 "registerObserver"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "o" type class_ref 128201 // Observer
+	
+	
+	
+	
+	
+      end
+
+      operation 138057 "unregisterObserver"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "o" type class_ref 128201 // Observer
+	
+	
+	
+	
+	
+      end
+
+      operation 138185 "notifyObservers"
+	public explicit_return_type "void"
+	nparams 0
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 128841 "ImageTile"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      operation 128457 "getName"
+	public explicit_return_type "String"
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 128585 "getPosition"
+	public return_type class_ref 129097 // Point2D
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 128713 "getLayer"
+	public explicit_return_type "int"
+	nparams 0
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 128969 "Serializable"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+    end
+
+    class 129097 "Point2D"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 128201 // <generalisation>
+	relation 128201 ---|>
+	  a public
+	    classrelation_ref 128201 // <generalisation>
+	  b parent class_ref 128969 // Serializable
+      end
+
+      attribute 128201 "serialVersionUID"
+	class_attribute private explicit_type "long"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 128329 "x"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 128457 "y"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      operation 129097 "getX"
+	public explicit_return_type "int"
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 129225 "getY"
+	public explicit_return_type "int"
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 129353 "plus"
+	public return_type class_ref 129097 // Point2D
+	nparams 1
+	  param in name "v" type class_ref 129225 // Vector2D
+	
+	
+	
+	
+	
+      end
+
+      operation 129481 "getNeighbourhoodPoints"
+	public explicit_return_type "List<Point2D>"
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 129609 "readFrom"
+	class_operation public return_type class_ref 129097 // Point2D
+	nparams 1
+	  param in name "in" explicit_type "Scanner"
+	
+	
+	
+	
+	
+      end
+
+      operation 129737 "writeTo"
+	public explicit_return_type "String"
+	nparams 1
+	  param in name "out" explicit_type "PrintWriter"
+	
+	
+	
+	
+	
+      end
+
+      operation 129865 "getFrontRect"
+	public explicit_return_type "List<Point2D>"
+	nparams 3
+	  param in name "d" type class_ref 129481 // Direction
+	  param in name "rect_width" explicit_type "int"
+	  param in name "rect_height" explicit_type "int"
+	
+	
+	
+	
+	
+      end
+
+      operation 129993 "getWideNeighbourhoodPoints"
+	public explicit_return_type "List<Point2D>"
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 130121 "vectorTo"
+	public return_type class_ref 129225 // Vector2D
+	nparams 1
+	  param in name "p" type class_ref 129097 // Point2D
+	
+	
+	
+	
+	
+      end
+
+      operation 130249 "directionTo"
+	public return_type class_ref 129481 // Direction
+	nparams 1
+	  param in name "p" type class_ref 129097 // Point2D
+	
+	
+	
+	
+	
+      end
+
+      operation 130377 "distanceTo"
+	public explicit_return_type "int"
+	nparams 1
+	  param in name "p" type class_ref 129097 // Point2D
+	
+	
+	
+	
+	
+      end
+
+      operation 130505 "plus"
+	public return_type class_ref 129097 // Point2D
+	nparams 1
+	  param in name "d" explicit_type "Dimension"
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 129225 "Vector2D"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 128329 // <generalisation>
+	relation 128329 ---|>
+	  a public
+	    classrelation_ref 128329 // <generalisation>
+	  b parent class_ref 128969 // Serializable
+      end
+
+      attribute 128585 "x"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 128713 "y"
+	private explicit_type "int"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      operation 130633 "movementVector"
+	class_operation public return_type class_ref 129225 // Vector2D
+	nparams 2
+	  param in name "from" type class_ref 129097 // Point2D
+	  param in name "to" type class_ref 129097 // Point2D
+	
+	
+	
+	
+	
+      end
+
+      operation 130761 "plus"
+	public return_type class_ref 129225 // Vector2D
+	nparams 1
+	  param in name "v" type class_ref 129225 // Vector2D
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 129353 "Ops2D"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      operation 128969 "area"
+	class_operation public explicit_return_type "int"
+	nparams 1
+	  param in name "r" explicit_type "Rectangle"
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 129481 "Direction"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 128457 // <generalisation>
+	relation 128457 ---|>
+	  a public
+	    classrelation_ref 128457 // <generalisation>
+	  b parent class_ref 128969 // Serializable
+      end
+
+      attribute 128841 "vector"
+	private type class_ref 129225 // Vector2D
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      operation 130889 "directionFor"
+	public return_type class_ref 129481 // Direction
+	nparams 1
+	  param in name "keyCode" explicit_type "int"
+	
+	
+	
+	
+	
+      end
+
+      operation 131017 "isDirection"
+	class_operation public explicit_return_type "boolean"
+	nparams 1
+	  param in name "lastKeyPressed" explicit_type "int"
+	
+	
+	
+	
+	
+      end
+
+      operation 131145 "opposite"
+	public return_type class_ref 129481 // Direction
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 131273 "random"
+	class_operation public return_type class_ref 129481 // Direction
+	nparams 0
+	
+	
+	
+	
+	
+      end
+
+      operation 131401 "forVector"
+	class_operation public return_type class_ref 129481 // Direction
+	nparams 1
+	  param in name "v" type class_ref 129225 // Vector2D
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 129609 "Floor"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 128585 // <generalisation>
+	relation 128585 ---|>
+	  a public
+	    classrelation_ref 128585 // <generalisation>
+	  b parent class_ref 128841 // ImageTile
+      end
+    end
+
+    class 129737 "Manel"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 128713 // <generalisation>
+	relation 128713 ---|>
+	  a public
+	    classrelation_ref 128713 // <generalisation>
+	  b parent class_ref 128841 // ImageTile
+      end
+
+      attribute 128073 "position"
+	private type class_ref 129097 // Point2D
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      operation 128841 "move"
+	public explicit_return_type "void"
+	nparams 0
+	
+	
+	
+	
+	
+      end
+    end
+
+    class 129865 "Wall"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 128841 // <generalisation>
+	relation 128841 ---|>
+	  a public
+	    classrelation_ref 128841 // <generalisation>
+	  b parent class_ref 128841 // ImageTile
+      end
+    end
+  end
+end
