@@ -3,31 +3,28 @@ package objects;
 import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Point2D;
 
-public class GameObject implements ImageTile {
+public abstract class GameObject implements ImageTile {
     protected Point2D position;
-    private String name;
-    private int layer;
 
-    public GameObject(Point2D initialPosition,String name, int layer){
+    public GameObject(Point2D initialPosition){
 		position = initialPosition;
-        this.name=name;
-        this.layer=layer;
 	}
 
-    @Override
-    public String getName(){
-        return name;
-    }
+    public abstract String getName();
+    
 
-    @Override
-    public Point2D getPosition() {
+    
+    public Point2D getPosition(){
         return position;
     }
 
-    @Override
-    public int getLayer(){
-        return layer;
-    }
+
+
+    public abstract int getLayer();
+
+
+
+
 
     
     

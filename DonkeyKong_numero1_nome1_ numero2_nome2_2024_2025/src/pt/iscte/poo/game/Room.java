@@ -19,7 +19,7 @@ public class Room {
 	private Point2D heroStartingPosition = new Point2D(3, 1);
 	private Manel manel;
 	private String level;
-	private String[][] matrixRoom = new String[10][10];
+	private static char[][] matrixRoom;
 	
 	public Room() {
 		manel = new Manel(heroStartingPosition);
@@ -30,41 +30,25 @@ public class Room {
 	}
 
 	public void moveManel(Direction d) {
-		if(manel.getPosition().getX()==0){
-
+		if(canMove(d)){
+			manel.move(d);
 		}
-		manel.move(d);
+		
 	}
 
 	public static Room readRoomFile(File f) {
 		Room sala = new Room();
 		try {
-			
+			//scanear mapa
 			Scanner sc = new Scanner(f);
 			sala.level = sc.nextLine();
 			String letras = "";
 			while(sc.hasNext()){
 				letras+=sc.nextLine();
 			}
-			
-			for(int i = 0; i != letras.length();i++){
-				ImageTile imagem;
-				if(letras.charAt(i)=='W'){
-					imagem = new Wall(vectorIndexToCoordenate(i));
-					ImageGUI.getInstance().addImage(imagem);
+			matrixRoom=stringToMatrix(letras);
+			loadMap();//carrega o mapa da mATRIxroom para o mapa mesmo
 
-				}
-				if(letras.charAt(i)=='S'){
-					imagem = new Stairs(vectorIndexToCoordenate(i));
-					ImageGUI.getInstance().addImage(imagem);
-
-				}
-				if(letras.charAt(i)=='t'){
-					imagem = new Trap(vectorIndexToCoordenate(i));
-					ImageGUI.getInstance().addImage(imagem);
-
-				}
-			}
 			
 			
 		} catch (Exception FileNotFoundException) {
@@ -79,14 +63,63 @@ public class Room {
 
 	
 
-	public static Point2D vectorIndexToCoordenate(int i){
-		return new Point2D(i%10,i/10);
-	}
-
-	public void addFloor(){
+	public static void addFloor(){
 		for(int i = 0; i != 10; i++){
 			for(int j = 0; j != 10; j++){
 				ImageGUI.getInstance().addImage(new Floor(new Point2D(i,j)));
+			}
+		}
+	}
+
+	public boolean canMove(Direction d){
+		Point2D nextPosition = manel.getPosition().plus(d.asVector());
+		if(nextPosition.getX()==-1||nextPosition.getX()==10||nextPosition.getY()==-1||nextPosition.getY()==10){
+			return false;
+		}
+		if(isBlock(nextPosition)){
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isBlock(Point2D p){
+		char c = matrixRoom[p.getY()][p.getX()];
+		if(c== 'W'||c== 't'){
+			return true;
+		}
+		return false;
+	}
+
+	public static char[][] stringToMatrix(String s){
+		char[][] matr = new char[10][10];
+		for(int i=0; i!= s.length();i++){
+			matr[i/10][i%10]=s.charAt(i);
+			System.out.println("indice ["+ i/10+"]"+ "["+i%10+"]"+ " é "+s.charAt(i) );
+		}
+		return matr;
+	}
+
+
+	public static void loadMap(){
+		ImageTile imagem;
+		for(int i = 0; i != 10;i++){
+			for(int j = 0; j != 10; j++){
+				switch (matrixRoom[i][j]) {
+					case 'W':
+						imagem = new Wall(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(imagem);
+						break;
+					case 'S':
+						imagem = new Stairs(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(imagem);
+						break;
+					case 't':
+						imagem = new Trap(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(imagem);
+						break;
+					default:
+						break;
+				}
 			}
 		}
 	}

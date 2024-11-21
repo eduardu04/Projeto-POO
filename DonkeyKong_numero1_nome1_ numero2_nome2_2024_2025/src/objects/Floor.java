@@ -6,7 +6,20 @@ import pt.iscte.poo.utils.Point2D;
 public class Floor extends GameObject{
 
 	public Floor(Point2D initialPosition) {
-		super(initialPosition,"Floor",0);
+		super(initialPosition);
+	}
+
+	@Override
+	public String getName() {
+		return "Floor";
+	}
+
+
+
+
+	@Override
+	public int getLayer() {
+		return 0;
 	}
 
 

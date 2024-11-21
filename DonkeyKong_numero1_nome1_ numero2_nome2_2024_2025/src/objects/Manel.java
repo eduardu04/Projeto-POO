@@ -7,7 +7,7 @@ import pt.iscte.poo.utils.Point2D;
 public class Manel extends GameObject{
 	
 	public Manel(Point2D initialPosition){
-		super(initialPosition,"JumpMan",2);
+		super(initialPosition);
 	}
 	
 	
@@ -15,5 +15,20 @@ public class Manel extends GameObject{
 	public void move(Direction d) {
 		super.position = super.position.plus(d.asVector());	
 	}
+
+
+	@Override
+	public String getName() {
+		return "JumpMan";
+	}
+
+
+
+
+	@Override
+	public int getLayer() {
+		return 2;
+	}
+	
 	
 }

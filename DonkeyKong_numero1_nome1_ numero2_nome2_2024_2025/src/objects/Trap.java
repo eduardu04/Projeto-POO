@@ -6,7 +6,20 @@ import pt.iscte.poo.utils.Point2D;
 public class Trap extends GameObject{
 
 	public Trap(Point2D initialPosition) {
-		super(initialPosition,"Trap",1);
+		super(initialPosition);
+	}
+
+    @Override
+	public String getName() {
+		return "Trap";
+	}
+
+
+
+
+	@Override
+	public int getLayer() {
+		return 1;
 	}
 
 	
