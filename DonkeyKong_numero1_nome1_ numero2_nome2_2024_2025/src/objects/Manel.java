@@ -4,32 +4,16 @@ import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
-public class Manel implements ImageTile {
-
-	private Point2D position;
+public class Manel extends GameObject{
 	
 	public Manel(Point2D initialPosition){
-		position = initialPosition;
+		super(initialPosition,"JumpMan",2);
 	}
 	
-	@Override
-	public String getName() {
-		return "JumpMan";
-	}
-
-	@Override
-	public Point2D getPosition() {
-		return position;
-	}
-
-	@Override
-	public int getLayer() {
-		// TODO Auto-generated method stub
-		return 2;
-	}
+	
 //Alterei e pus parametro Direction
 	public void move(Direction d) {
-		position = position.plus(d.asVector());	
+		super.position = super.position.plus(d.asVector());	
 	}
 	
 }
