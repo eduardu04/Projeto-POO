@@ -3,11 +3,10 @@ package objects;
 import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Point2D;
 
-public class Floor implements ImageTile {
-	private Point2D position;
+public class Floor extends GameObject{
 
 	public Floor(Point2D initialPosition) {
-		position=initialPosition;
+		super(initialPosition);
 	}
 
 	@Override
@@ -15,15 +14,15 @@ public class Floor implements ImageTile {
 		return "Floor";
 	}
 
+
+
+
 	@Override
 	public int getLayer() {
 		return 0;
 	}
 
-	@Override
-	public Point2D getPosition() {
-		return position;
-	}
+
 
 
 }

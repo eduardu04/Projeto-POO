@@ -1,8 +1,8 @@
-window_sizes 1280 856 0 1274 740 64
+window_sizes 1280 856 0 1274 760 44
 cleanlooks_style
 diagrams
   active  classdiagram_ref 128073 // UMLView
-    1274 1202 70 B-Landscape 0 0
+    1274 1202 90 B-Landscape 0 0
 end
 show_stereotypes
 selected operation_ref 138569 // init
