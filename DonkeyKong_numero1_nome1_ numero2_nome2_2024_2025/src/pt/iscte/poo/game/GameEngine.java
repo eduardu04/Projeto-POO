@@ -19,6 +19,8 @@ public class GameEngine implements Observer {
 	@Override
 	public void update(Observed source) {
 		
+		currentRoom.manelFall();
+		currentRoom.checkPickSword();
 		if (ImageGUI.getInstance().wasKeyPressed()) {
 			int k = ImageGUI.getInstance().keyPressed();
 			System.out.println("Keypressed " + k);
@@ -35,9 +37,14 @@ public class GameEngine implements Observer {
 	}
 
 	private void processTick() {
+		if(lastTickProcessed%2==0){
+			currentRoom.moveMovables();
+		}
 		System.out.println("Tic Tac : " + lastTickProcessed);
 		lastTickProcessed++;
 	}
+
+	
 
 
 
