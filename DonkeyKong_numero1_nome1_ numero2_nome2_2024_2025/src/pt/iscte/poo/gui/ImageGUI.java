@@ -208,8 +208,11 @@ public class ImageGUI extends Observed {
         notifyObservers();
     }
 
+    
     private void initImages() {
+        System.out.println();
         File dir = new File(IMAGE_DIR);
+        System.out.println(dir.getAbsolutePath());
         for (File f : dir.listFiles()) {
             assert (f.getName().lastIndexOf('.') != -1);
             imageDB.put(f.getName().substring(0, f.getName().lastIndexOf('.')),

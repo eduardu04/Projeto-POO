@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import pt.iscte.poo.gui.ImageTile;
 public class Room {
 	
-	private Point2D heroStartingPosition = new Point2D(3, 1);
+	private Point2D heroStartingPosition = new Point2D(1, 0);
 	private Manel manel;
 	private String level;
 	private static char[][] matrixRoom;
@@ -115,6 +115,18 @@ public class Room {
 						break;
 					case 't':
 						imagem = new Trap(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(imagem);
+						break;
+					case '0':
+						imagem = new Door(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(imagem);
+						break;
+					case 'G':
+						imagem = new DonkeyKong(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(imagem);
+						break;
+					case 's':
+						imagem = new Sword(new Point2D(j,i));
 						ImageGUI.getInstance().addImage(imagem);
 						break;
 					default:
