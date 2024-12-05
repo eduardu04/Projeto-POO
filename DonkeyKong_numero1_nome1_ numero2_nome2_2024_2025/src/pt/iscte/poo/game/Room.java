@@ -221,7 +221,7 @@ public class Room {
 	}
 
 	public void manelStatus() {	
-		ImageGUI.getInstance().setStatusMessage("PIPOCA");
+		ImageGUI.getInstance().setStatusMessage("Vidas: " + manel.getLives() + " Saúde: " + manel.getHealth() +  " Dano: " + manel.getDamage());
 	}
 	
 	
