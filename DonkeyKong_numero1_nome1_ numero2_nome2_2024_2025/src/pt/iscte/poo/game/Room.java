@@ -18,13 +18,13 @@ public class Room {
 	private static Manel manel;
 	private String level;
 	private static char[][] matrixRoom;
-	private static List<GameObject> objetosTemp;
-	private static List<Movable> objetosMoviveis;
+	private static List<Interactable> objetosInteractable;
+	private static List<Movable> objetosMoveis;
 	
 	public Room() {
 		addFloor();
-		objetosTemp=new ArrayList<>();
-		objetosMoviveis=new ArrayList<>();
+		objetosInteractable=new ArrayList<>();
+		objetosMoveis=new ArrayList<>();
 	}
 
 	public void moveManel(Direction d) {
@@ -34,14 +34,30 @@ public class Room {
 		
 	}
 
-	
-
 	public void moveMovables(){ 
-		for(Movable i : objetosMoviveis){
+		for(Movable i : objetosMoveis){
 			i.move(randomPossibleDirection(i));
 		}
 	}
+	
+	public void interactTemp() {
+		for(Interactable i : objetosInteractable) {
+			if(isInteractable(i) == true) {
+				i.interact(manel);
+				deleteObject(i);
+			}
+		}
+	}
 
+	public void deleteObject(Interactable obj) {
+		Point2D posAt = ((ImageTile) obj).getPosition();
+		matrixRoom[posAt.getY()][posAt.getX()]=' ';
+		ImageTile espada= findObjectByPoint(posAt);
+		ImageGUI.getInstance().removeImage(espada);	//remove imagem do mapa
+		objetosInteractable.remove(obj);	//remove objeto da lista de objetos temporarios
+		matrixRoom[posAt.getY()][posAt.getX()]=' ';//Apaga o objeto da matriz
+	}
+	
 	public Direction randomPossibleDirection(Movable ob){
 		Direction d = Direction.random();
 		while(!canMove(ob,d)){
@@ -62,7 +78,7 @@ public class Room {
 			}
 			matrixRoom=stringToMatrix(letras);
 			loadMap();//carrega o mapa da mATRIxroom para o mapa mesmo
-
+			sc.close();
 			
 			
 		} catch (Exception FileNotFoundException) {
@@ -70,8 +86,6 @@ public class Room {
 		}
 		return sala;
 	}
-
-	
 
 	public static void addFloor(){
 		for(int i = 0; i != 10; i++){
@@ -81,7 +95,7 @@ public class Room {
 		}
 	}
 
-	public boolean canMove(Movable ob,Direction d){
+	public boolean canMove(Movable ob, Direction d){
 		Point2D nextPosition = ob.getPosition().plus(d.asVector());
 		if(insideMap(nextPosition) && !isBlock(nextPosition)){
 			if(d.name()=="UP" && !isStairs(ob.getPosition())){//Caso o objeto nao esteja numa escada não pode subir de posição ou seja "voar"!
@@ -102,12 +116,24 @@ public class Room {
 	}
 	public boolean isStairs(Point2D p){
 		char c = matrixRoom[p.getY()][p.getX()];
-		if(c== 'S'){
+		if(c == 'S'){
 			return true;
 		}
 		return false;
 	}
 
+	public boolean isDoor(Point2D p) {
+		char c = matrixRoom[p.getY()][p.getX()];
+		if(c == '0') {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isInteractable(Interactable object) {
+		return manel.getPosition() == ((ImageTile) object).getPosition();
+	}
+	
 	public void manelFall(){//Quando nao tem nada por baixo o Manel cai
 		Point2D manelGround = manel.getPosition().plus(new Vector2D(0, 1));
 		if(!isBlock(manelGround) && !isStairs(manelGround)){
@@ -134,37 +160,43 @@ public class Room {
 
 	public static void loadMap(){
 		GameObject fixo;
+		Interactable interactable;
 		Movable movel;
 		for(int i = 0; i != 10;i++){
 			for(int j = 0; j != 10; j++){
 				switch (matrixRoom[i][j]) {
-					case 'W':
-					
+					case 'W':			
 						fixo = new Wall(new Point2D(j,i));
 						ImageGUI.getInstance().addImage(fixo);
 						break;
+						
 					case 'S':
 						fixo = new Stairs(new Point2D(j,i));
 						ImageGUI.getInstance().addImage(fixo);
 						break;
+						
 					case 't':
 						fixo = new Trap(new Point2D(j,i));
 						ImageGUI.getInstance().addImage(fixo);
 						break;
+						
 					case '0':
 						fixo = new Door(new Point2D(j,i));
 						ImageGUI.getInstance().addImage(fixo);
 						break;
+						
 					case 'G':
 						movel = new DonkeyKong(new Point2D(j,i));
 						ImageGUI.getInstance().addImage(movel);
-						objetosMoviveis.add(movel);
+						objetosMoveis.add(movel);
 						break;
+						
 					case 's':
-						fixo = new Sword(new Point2D(j,i));
-						ImageGUI.getInstance().addImage(fixo);
-						objetosTemp.add(fixo);
+						interactable = new Sword(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(interactable);
+						objetosInteractable.add(interactable);
 						break;
+						
 					case 'H':
 						heroStartingPosition= new Point2D(j,i);
 						manel = new Manel(heroStartingPosition);
@@ -179,21 +211,8 @@ public class Room {
 		
 	}
 	
-
-	public void checkPickSword(){//posteriormente chekar também outros objetos tipo a carne e assim que são objetos temporários
-		Point2D posAt=manel.getPosition();
-		if(matrixRoom[posAt.getY()][posAt.getX()]=='s'){
-			manel.addDamage(15);
-			ImageTile espada= findObjectByPoint(posAt);
-			ImageGUI.getInstance().removeImage(espada);//remove imagem do mapa
-			objetosTemp.remove(espada);//remove objeto da lista de objetos temporarios
-			matrixRoom[posAt.getY()][posAt.getX()]=' ';//Apaga o objeto da matriz
-			ImageGUI.getInstance().setStatusMessage("Espada apanhada!    +15 dano    Dano: "+manel.getDamage());
-		}
-	}
-
 	public ImageTile findObjectByPoint(Point2D p){
-		for(ImageTile i : objetosTemp){
+		for(ImageTile i : objetosInteractable){
 			if(i.getPosition().equals(p)){
 				return i;
 			}
@@ -201,7 +220,4 @@ public class Room {
 		throw new NullPointerException();
 	}
 
-	
-
-	
 }

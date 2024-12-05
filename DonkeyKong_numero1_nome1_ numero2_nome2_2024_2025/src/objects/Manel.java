@@ -5,7 +5,7 @@ import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
 public class Manel extends GameObject implements Movable{
-	private int damageLevel=0;
+	private int damageLevel = 0;
 	
 	public Manel(Point2D initialPosition){
 		super(initialPosition);
@@ -23,20 +23,20 @@ public class Manel extends GameObject implements Movable{
 		return "JumpMan";
 	}
 
-
-
-
 	@Override
 	public int getLayer() {
 		return 2;
 	}
-
-	public void addDamage(int lev){
-		damageLevel+=lev;
-	}
+	
+	
 
 	public int getDamage(){
 		return damageLevel;
+	}
+
+	public void giveSword() {
+		damageLevel += 15;
+		
 	}
 	
 	

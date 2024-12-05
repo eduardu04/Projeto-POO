@@ -20,7 +20,9 @@ public class GameEngine implements Observer {
 	public void update(Observed source) {
 		
 		currentRoom.manelFall();
-		currentRoom.checkPickSword();
+		currentRoom.interactTemp();
+		
+		
 		if (ImageGUI.getInstance().wasKeyPressed()) {
 			int k = ImageGUI.getInstance().keyPressed();
 			System.out.println("Keypressed " + k);
