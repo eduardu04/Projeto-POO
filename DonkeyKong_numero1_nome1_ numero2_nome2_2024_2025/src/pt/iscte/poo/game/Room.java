@@ -220,4 +220,10 @@ public class Room {
 		throw new NullPointerException();
 	}
 
+	public void manelStatus() {	
+		ImageGUI.getInstance().setStatusMessage("PIPOCA");
+	}
+	
+	
+
 }

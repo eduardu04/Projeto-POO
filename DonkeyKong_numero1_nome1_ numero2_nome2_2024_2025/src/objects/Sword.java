@@ -21,7 +21,6 @@ public class Sword extends GameObject implements Interactable{
     
 	public void interact(Manel manel) {
 		manel.giveSword();
-		ImageGUI.getInstance().setStatusMessage("Espada apanhada!" + " Dano: " + manel.getDamage());
 	}
     
 }

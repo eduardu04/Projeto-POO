@@ -21,7 +21,7 @@ public class GameEngine implements Observer {
 		
 		currentRoom.manelFall();
 		currentRoom.interactTemp();
-		
+		currentRoom.manelStatus();
 		
 		if (ImageGUI.getInstance().wasKeyPressed()) {
 			int k = ImageGUI.getInstance().keyPressed();
