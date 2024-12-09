@@ -3,7 +3,8 @@ package objects;
 import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Point2D;
 
-public class Trap extends GameObject{
+public class Trap extends GameObject implements Interactable{
+	private boolean shouldDisappear=false;
 
 	public Trap(Point2D initialPosition) {
 		super(initialPosition);
@@ -21,6 +22,25 @@ public class Trap extends GameObject{
 	public int getLayer() {
 		return 1;
 	}
+
+	@Override
+	public void interact(Manel manel) {
+		manel.hurt(20);
+		shouldDisappear=true;
+	}
+
+	@Override
+	public boolean shouldDisappear() {
+		return shouldDisappear;
+	}
+
+	
+
+	
+
+
+	
+
 
 	
     

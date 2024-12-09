@@ -34,20 +34,50 @@ public class Room {
 		
 	}
 
+	
+
 	public void moveMovables(){ 
 		for(Movable i : objetosMoveis){
 			i.move(randomPossibleDirection(i));
 		}
 	}
 	
+<<<<<<< Updated upstream
 	public void interactTemp() {
 		for(Interactable i : objetosInteractable) {
 			if(isInteractable(i) == true) {
 				i.interact(manel);
 				deleteObject(i);
+=======
+		while (iterator.hasNext()) {
+			Interactable i = iterator.next();
+			if (canInteract(i)) {
+				i.interact(manel); 
+				if(manel.rip()){//manel morreeee
+					deleteObject(manel.getPosition());
+				}
+				if(i.shouldDisappear()){
+					deleteObject(i.getPosition());
+					iterator.remove();	
+				}
+					
+>>>>>>> Stashed changes
 			}
+			
 		}
 	}
+<<<<<<< Updated upstream
+=======
+	
+	
+	
+	public boolean canInteract(Interactable i) { //Se dois objetos estão na mesma posição entao podem interagir
+		Point2D manelPosition = manel.getPosition();
+		Point2D objectPosition = i.getPosition();
+	
+		return manelPosition.equals(objectPosition);
+	}
+>>>>>>> Stashed changes
 
 	public void deleteObject(Interactable obj) {
 		Point2D posAt = ((ImageTile) obj).getPosition();
@@ -176,8 +206,9 @@ public class Room {
 						break;
 						
 					case 't':
-						fixo = new Trap(new Point2D(j,i));
-						ImageGUI.getInstance().addImage(fixo);
+						Trap trap = new Trap(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(trap);
+						objetosInteractable.add(trap);  
 						break;
 						
 					case '0':
@@ -186,9 +217,10 @@ public class Room {
 						break;
 						
 					case 'G':
-						movel = new DonkeyKong(new Point2D(j,i));
-						ImageGUI.getInstance().addImage(movel);
-						objetosMoveis.add(movel);
+						DonkeyKong donkeyKong = new DonkeyKong(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(donkeyKong);
+						objetosMoveis.add(donkeyKong);
+						objetosInteractable.add(donkeyKong);  
 						break;
 						
 					case 's':

@@ -39,7 +39,7 @@ public class GameEngine implements Observer {
 	}
 
 	private void processTick() {
-		if(lastTickProcessed%2==0){
+		if(lastTickProcessed%2==0){ //Mexer a cada dois tiks
 			currentRoom.moveMovables();
 		}
 		System.out.println("Tic Tac : " + lastTickProcessed);
