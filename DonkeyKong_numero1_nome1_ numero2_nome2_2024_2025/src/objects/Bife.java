@@ -35,6 +35,11 @@ public class Bife extends GameObject implements Interactable, Timable{
 		}
 	}
 
+        @Override
+	public boolean isDeletable(){
+		return true;
+	}
+
 	@Override
 	public int checkInnerClock() {
 		return ticks;
@@ -42,9 +47,10 @@ public class Bife extends GameObject implements Interactable, Timable{
 	
 	@Override
 	public void processTick()	{
-		if(ticks > 6) {
+		if(ticks > 10) {
 			setRotten();
 		}
 		ticks++;
 	}
+
 }

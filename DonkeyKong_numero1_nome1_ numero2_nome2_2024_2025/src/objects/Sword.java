@@ -18,6 +18,11 @@ public class Sword extends GameObject implements Interactable{
     }
     
     @Override
+    public boolean isDeletable(){
+		return true;
+	}
+
+    @Override
 	public void interact(Manel manel) {
 		manel.giveSword();
 	}
