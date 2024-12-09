@@ -29,9 +29,9 @@ public class Bife extends GameObject implements Interactable, Timable{
 	@Override
 	public void interact(Manel manel) {
 		if(isRotten == true) {
-			manel.hurtManel(10);
+			manel.hurt(10);
 		} else {
-			manel.healManel(25);
+			manel.heal(25);
 		}
 	}
 

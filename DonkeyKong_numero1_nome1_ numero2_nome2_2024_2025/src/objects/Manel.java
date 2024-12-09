@@ -2,7 +2,7 @@ package objects;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
-public class Manel extends GameObject implements Movable{
+public class Manel extends GameObject implements Movable, Living{
 	private int damageLevel = 0;
 	private int lives = 3;
 	private int health = 100;
@@ -26,18 +26,12 @@ public class Manel extends GameObject implements Movable{
 		return 2;
 	}
 	
-	public void hurtManel(int damage) {
-		health -= damage;
-	}
 	
-	public void healManel(int heal) {
-		health += heal;
-	}
-
+	@Override
 	public int getDamage(){
 		return damageLevel;
 	}
-	
+	@Override
 	public int getHealth() {
 		return health;
 	}
@@ -48,6 +42,16 @@ public class Manel extends GameObject implements Movable{
 
 	public void giveSword() {
 		damageLevel += 15;
+	}
+
+	@Override
+	public void hurt(int damage) {
+		health -= damage;
+	}
+
+	
+	public void heal(int heal) {
+		health += heal;
 	}
 
 }

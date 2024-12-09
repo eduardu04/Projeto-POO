@@ -5,8 +5,9 @@ package objects;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
-public class DonkeyKong extends GameObject implements Movable, Interactable{
-    private int vida = 60;
+public class DonkeyKong extends GameObject implements Movable, Interactable, Living{
+    private int health = 60;
+    private int damage = 35;
 
     public DonkeyKong(Point2D initialPosition){
         super(initialPosition);
@@ -27,18 +28,34 @@ public class DonkeyKong extends GameObject implements Movable, Interactable{
 		super.position = super.position.plus(d.asVector());	
 	}
 
-    public void hurtDonkeyKong(int damage){
-        vida -= damage;
-    }
+
 
     @Override
     public boolean isDeletable(){
-        return vida <= 0;
+        return health <= 0;
     }
 
     public void interact(Manel manel) {
-        manel.hurtManel(35);
-        hurtDonkeyKong(manel.getDamage());
+        manel.hurt(getDamage());
+        hurt(manel.getDamage());
     }
+
+    @Override
+    public int getHealth() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getHealth'");
+    }
+
+    @Override
+    public int getDamage() {
+        return damage;
+    }
+
+    @Override
+    public void hurt(int damage) {
+        health-= damage;
+    }
+
+    
     
 }
