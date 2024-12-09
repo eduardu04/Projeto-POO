@@ -3,7 +3,7 @@ import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
 public class Manel extends GameObject implements Movable{
-	private int damageLevel = 0;
+	private int damageLevel = 25;
 	private int lives = 3;
 	private int health = 100;
 	private Point2D initialPosition;

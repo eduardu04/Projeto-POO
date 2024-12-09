@@ -37,7 +37,6 @@ public class DonkeyKong extends GameObject implements Movable, Interactable{
     }
 
     public void interact(Manel manel) {
-        manel.hurtManel(35);
         hurtDonkeyKong(manel.getDamage());
     }
     

@@ -275,7 +275,6 @@ public class Room {
 		
 		ImageGUI.getInstance().addImage(manel);
 		
-
 	}
 
 	public void manelStatus() {	
