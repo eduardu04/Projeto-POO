@@ -1,39 +1,84 @@
 package pt.iscte.poo.game;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import javax.swing.colorchooser.ColorChooserComponentFactory;
-
-
-import objects.*;
-import pt.iscte.poo.gui.ImageGUI;
-import pt.iscte.poo.utils.Point2D;
-import pt.iscte.poo.utils.Direction;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
+import objects.*;
+import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.gui.ImageTile;
+import pt.iscte.poo.utils.Direction;
+import pt.iscte.poo.utils.Point2D;
+import pt.iscte.poo.utils.Vector2D;
 public class Room {
 	
-	private Point2D heroStartingPosition = new Point2D(3, 1);
-	private Manel manel;
+	private static Point2D heroStartingPosition;
+	private static Manel manel;
 	private String level;
 	private static char[][] matrixRoom;
+	private static List<Interactable> objetosInteractable;
+	private static List<Movable> objetosMoveis;
+	private static List<Timable> objetosTimable;
 	
 	public Room() {
-		manel = new Manel(heroStartingPosition);
-		ImageGUI.getInstance().addImage(manel);
 		addFloor();
-
-
+		objetosInteractable = new ArrayList<>();
+		objetosMoveis = new ArrayList<>();
+		objetosTimable = new ArrayList<>();
 	}
 
 	public void moveManel(Direction d) {
-		if(canMove(d)){
+		if(canMove(manel,d)){
 			manel.move(d);
 		}
 		
+	}
+
+	public void moveMovables(){ 
+		for(Movable i : objetosMoveis){
+			i.move(randomPossibleDirection(i));
+		}
+	}
+	public void processTimables(){
+		for(Timable i : objetosTimable){
+			i.processTick();
+		}
+	}
+
+	public void interact() {
+		Iterator<Interactable> iterator = objetosInteractable.iterator();
+	
+		while (iterator.hasNext()) {
+			Interactable i = iterator.next();
+			if (canInteract(i)) {
+				i.interact(manel); 
+				deleteObject(i.getPosition());
+				iterator.remove();		
+			}
+		}
+	}
+	
+	
+	
+	public boolean canInteract(Interactable i) {
+		Point2D manelPosition = manel.getPosition();
+		Point2D objectPosition = i.getPosition();
+	
+		return manelPosition.equals(objectPosition);
+	}
+
+	public void deleteObject(Point2D posAt) {
+		ImageTile tile = findObjectByPoint(posAt);
+		ImageGUI.getInstance().removeImage(tile); 	
+	}
+	
+	public Direction randomPossibleDirection(Movable ob){
+		Direction d = Direction.random();
+		while(!canMove(ob,d)){
+			d = Direction.random();
+		}
+		return d;
 	}
 
 	public static Room readRoomFile(File f) {
@@ -48,20 +93,14 @@ public class Room {
 			}
 			matrixRoom=stringToMatrix(letras);
 			loadMap();//carrega o mapa da mATRIxroom para o mapa mesmo
-
+			sc.close();
 			
 			
-		} catch (Exception FileNotFoundException) {
+		} catch (FileNotFoundException FileNotFoundException) {
 			System.err.println("Erroooo");
 		}
 		return sala;
-		
-
-
-		
 	}
-
-	
 
 	public static void addFloor(){
 		for(int i = 0; i != 10; i++){
@@ -71,15 +110,16 @@ public class Room {
 		}
 	}
 
-	public boolean canMove(Direction d){
-		Point2D nextPosition = manel.getPosition().plus(d.asVector());
-		if(nextPosition.getX()==-1||nextPosition.getX()==10||nextPosition.getY()==-1||nextPosition.getY()==10){
-			return false;
+	public boolean canMove(Movable ob, Direction d){
+		Point2D nextPosition = ob.getPosition().plus(d.asVector());
+		if(insideMap(nextPosition) && !isBlock(nextPosition)){
+			if(d.name()=="UP" && !isStairs(ob.getPosition())){//Caso o objeto nao esteja numa escada não pode subir de posição ou seja "voar"!
+				return false;
+			}
+			return true;
 		}
-		if(isBlock(nextPosition)){
-			return false;
-		}
-		return true;
+		
+		return false;
 	}
 
 	public boolean isBlock(Point2D p){
@@ -88,6 +128,35 @@ public class Room {
 			return true;
 		}
 		return false;
+	}
+	public boolean isStairs(Point2D p){
+		char c = matrixRoom[p.getY()][p.getX()];
+		if(c == 'S'){
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isDoor(Point2D p) {
+		char c = matrixRoom[p.getY()][p.getX()];
+		if(c == '0') {
+			return true;
+		}
+		return false;
+	}
+
+	public void manelFall(){//Quando nao tem nada por baixo o Manel cai
+		Point2D manelGround = manel.getPosition().plus(new Vector2D(0, 1));
+		if(!isBlock(manelGround) && !isStairs(manelGround)){
+			moveManel(Direction.DOWN);
+		}
+	}
+
+	public boolean insideMap(Point2D p){
+		if(p.getX()==-1||p.getX()==10||p.getY()==-1||p.getY()==10){
+			return false;
+		}
+		return true;
 	}
 
 	public static char[][] stringToMatrix(String s){
@@ -101,30 +170,81 @@ public class Room {
 
 
 	public static void loadMap(){
-		ImageTile imagem;
+		GameObject fixo;
+		Interactable interactable;
+		Movable movel;
+
 		for(int i = 0; i != 10;i++){
 			for(int j = 0; j != 10; j++){
 				switch (matrixRoom[i][j]) {
-					case 'W':
-						imagem = new Wall(new Point2D(j,i));
-						ImageGUI.getInstance().addImage(imagem);
+					case 'W':			
+						fixo = new Wall(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(fixo);
 						break;
+					
 					case 'S':
-						imagem = new Stairs(new Point2D(j,i));
-						ImageGUI.getInstance().addImage(imagem);
+						fixo = new Stairs(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(fixo);
 						break;
+						
 					case 't':
-						imagem = new Trap(new Point2D(j,i));
-						ImageGUI.getInstance().addImage(imagem);
+						fixo = new Trap(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(fixo);
+						break;
+						
+					case '0':
+						fixo = new Door(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(fixo);
+						break;
+						
+					case 'H':
+						heroStartingPosition= new Point2D(j,i);
+						manel = new Manel(heroStartingPosition);
+						ImageGUI.getInstance().addImage(manel);
+						break;
+						
+					case 'G':
+						movel = new DonkeyKong(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(movel);
+						objetosMoveis.add(movel);
+						break;
+				
+					case 's':
+						interactable = new Sword(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(interactable);
+						objetosInteractable.add(interactable);
+						break; 
+					 
+					case 'b':
+						Bife bife = new Bife(new Point2D(j,i));	
+						ImageGUI.getInstance().addImage(bife); 
+						objetosInteractable.add(bife);  
+						objetosTimable.add(bife);  
 						break;
 					default:
 						break;
 				}
 			}
 		}
+
+		
+	}
+	
+	public ImageTile findObjectByPoint(Point2D p) {
+		for (ImageTile i : objetosInteractable) {
+			if (i.getPosition().equals(p)) {
+				return i;
+			}
+		}
+	
+		System.err.println("Objeto não encontrado na posição " + p);
+		return null;
 	}
 
+	public void manelStatus() {	
+		ImageGUI.getInstance().setStatusMessage("Vidas: " + manel.getLives() + "  Saúde: " + manel.getHealth() +  "  Dano: " + manel.getDamage());
+	}
+	
 	
 
-	
 }

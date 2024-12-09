@@ -1,13 +1,13 @@
 #0;room1.txt
-0 G       
+0 G  G    
 WWWWWWWSWW
-       S  
+    s  S  
 tWSWWWWWWW
   S       
-WWWWSWWWWW
+WWWWSWW WW
     S  s  
 WWWWWSWWWW
-     S H  
+   b S H  
 WWWWWWWWWW
 
 
