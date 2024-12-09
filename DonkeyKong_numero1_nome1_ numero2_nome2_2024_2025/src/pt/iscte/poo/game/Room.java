@@ -262,7 +262,28 @@ public class Room {
 		return null;
 	}
 
+	public void restartLevel(){
+
+	}
+
+	public void respawnManel(int lives, Point2D startingPosition){
+		Manel deadManel = manel;
+		ImageGUI.getInstance().removeImage(deadManel);
+		
+		manel = new Manel(heroStartingPosition);
+		manel.setLives(lives);
+		
+		ImageGUI.getInstance().addImage(manel);
+		
+
+	}
+
 	public void manelStatus() {	
+		if(manel.getHealth() < 0){
+			respawnManel(manel.getLives() - 1, heroStartingPosition);
+			
+		}
+
 		ImageGUI.getInstance().setStatusMessage("Vidas: " + manel.getLives() + "  Saúde: " + manel.getHealth() +  "  Dano: " + manel.getDamage());
 	}
 	

@@ -6,9 +6,11 @@ public class Manel extends GameObject implements Movable{
 	private int damageLevel = 0;
 	private int lives = 3;
 	private int health = 100;
+	private Point2D initialPosition;
 	
-	public Manel(Point2D initialPosition){
+	public Manel(Point2D initialPosition)	{
 		super(initialPosition);
+		this.initialPosition = initialPosition;
 	}
 
 	@Override
@@ -50,4 +52,11 @@ public class Manel extends GameObject implements Movable{
 		damageLevel += 15;
 	}
 
+	public void setLives(int lives){
+		this.lives = lives;
+	}
+
+	public void setHealth(int health){
+		this.health = health;
+	}
 }
