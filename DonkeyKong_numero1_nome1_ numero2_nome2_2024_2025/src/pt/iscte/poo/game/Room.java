@@ -23,8 +23,9 @@ public class Room {
 	
 	public Room() {
 		addFloor();
-		objetosInteractable=new ArrayList<>();
-		objetosMoveis=new ArrayList<>();
+		objetosInteractable = new ArrayList<>();
+		objetosMoveis = new ArrayList<>();
+		objetosTimable = new ArrayList<>();
 	}
 
 	public void moveManel(Direction d) {
@@ -172,7 +173,6 @@ public class Room {
 		GameObject fixo;
 		Interactable interactable;
 		Movable movel;
-		Bife bife;
 
 		for(int i = 0; i != 10;i++){
 			for(int j = 0; j != 10; j++){
@@ -214,14 +214,13 @@ public class Room {
 						ImageGUI.getInstance().addImage(interactable);
 						objetosInteractable.add(interactable);
 						break; 
-					/* 
+					 
 					case 'b':
-						interactable = new Bife(new Point2D(j,i));					
-						ImageGUI.getInstance().addImage(interactable);
-						objetosInteractable.add(interactable);
-						
+						Bife bife = new Bife(new Point2D(j,i));	
+						ImageGUI.getInstance().addImage(bife); 
+						objetosInteractable.add(bife);  
+						objetosTimable.add(bife);  
 						break;
-					*/
 					default:
 						break;
 				}

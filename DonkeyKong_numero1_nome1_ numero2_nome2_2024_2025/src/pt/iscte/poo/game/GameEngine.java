@@ -32,9 +32,10 @@ public class GameEngine implements Observer {
 			processTick();
 		}
 
+		currentRoom.processTimables();
 		currentRoom.interact();
 		currentRoom.manelFall();
-		currentRoom.manelStatus();
+		currentRoom.manelStatus();		
 		ImageGUI.getInstance().update();
 
 	}
