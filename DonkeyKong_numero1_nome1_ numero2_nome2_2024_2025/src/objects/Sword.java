@@ -1,6 +1,4 @@
 package objects;
-
-import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Point2D;
 
 public class Sword extends GameObject implements Interactable{
@@ -19,6 +17,7 @@ public class Sword extends GameObject implements Interactable{
         return 1;
     }
     
+    @Override
 	public void interact(Manel manel) {
 		manel.giveSword();
 	}

@@ -1,7 +1,4 @@
 package objects;
-
-import pt.iscte.poo.gui.ImageGUI;
-import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
@@ -13,15 +10,18 @@ public class Manel extends GameObject implements Movable{
 	public Manel(Point2D initialPosition){
 		super(initialPosition);
 	}
-	
+
+	@Override
 	public void move(Direction d) {
 		super.position = super.position.plus(d.asVector());	
 	}
 
+	@Override
 	public String getName() {
 		return "JumpMan";
 	}
 
+	@Override
 	public int getLayer() {
 		return 2;
 	}
@@ -42,12 +42,12 @@ public class Manel extends GameObject implements Movable{
 		return health;
 	}
 
-	
+	public int getLives() {
+		return lives;
+	}
+
 	public void giveSword() {
 		damageLevel += 15;
 	}
 
-	public int getLives() {
-		return lives;
-	}
 }

@@ -1,4 +1,5 @@
 package objects;
+
 import pt.iscte.poo.gui.ImageTile;
 
 public interface Interactable extends ImageTile{   

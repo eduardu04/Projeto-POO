@@ -11,10 +11,12 @@ public class Bife extends GameObject implements Interactable, Timable{
         super(initialPosition);
     }
 	
+    @Override
 	public String getName() {
 		return name;
 	}
 	
+    @Override
 	public int getLayer() {
 		return 1;
 	}
@@ -24,6 +26,7 @@ public class Bife extends GameObject implements Interactable, Timable{
 		name = "BadMeat";
 	}
 	
+	@Override
 	public void interact(Manel manel) {
 		if(isRotten == true) {
 			manel.hurtManel(10);
@@ -32,15 +35,16 @@ public class Bife extends GameObject implements Interactable, Timable{
 		}
 	}
 
+	@Override
 	public int checkInnerClock() {
 		return ticks;
 	}
 	
+	@Override
 	public void processTick()	{
 		if(ticks > 6) {
 			setRotten();
 		}
-		
 		ticks++;
 	}
 }

@@ -1,17 +1,15 @@
 package pt.iscte.poo.game;
-import java.util.ArrayList;
-import java.util.Scanner;
-import javax.swing.colorchooser.ColorChooserComponentFactory;
-import objects.*;
-import pt.iscte.poo.gui.ImageGUI;
-import pt.iscte.poo.utils.Point2D;
-import pt.iscte.poo.utils.Vector2D;
-import pt.iscte.poo.utils.Direction;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import objects.*;
+import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.gui.ImageTile;
+import pt.iscte.poo.utils.Direction;
+import pt.iscte.poo.utils.Point2D;
+import pt.iscte.poo.utils.Vector2D;
 public class Room {
 	
 	private static Point2D heroStartingPosition;
@@ -20,6 +18,7 @@ public class Room {
 	private static char[][] matrixRoom;
 	private static List<Interactable> objetosInteractable;
 	private static List<Movable> objetosMoveis;
+	private static List<Timable> objetosTimable;
 	
 	public Room() {
 		addFloor();
@@ -39,21 +38,32 @@ public class Room {
 			i.move(randomPossibleDirection(i));
 		}
 	}
-	
-	public void interactTemp() {
-		for(Interactable i : objetosInteractable) {
-			if(isInteractable(i) == true) {
+	public void processTimables(){
+		for(Timable i : objetosTimable){
+			i.processTick();
+		}
+	}
+
+	public void interact(){
+		for(Interactable i : objetosInteractable){
+			if(canInteract(i)){
 				i.interact(manel);
 				deleteObject(i);
 			}
 		}
 	}
+	
+	public boolean canInteract(Interactable i) {
+		Point2D manelPosition = manel.getPosition();
+		Point2D objectPosition = i.getPosition();
+	
+		return manelPosition.equals(objectPosition);
+	}
 
 	public void deleteObject(Interactable obj) {
 		Point2D posAt = ((ImageTile) obj).getPosition();
-		matrixRoom[posAt.getY()][posAt.getX()]=' ';
-		ImageTile espada= findObjectByPoint(posAt);
-		ImageGUI.getInstance().removeImage(espada);	//remove imagem do mapa
+		ImageTile tile= findObjectByPoint(posAt);
+		ImageGUI.getInstance().removeImage(tile);	//remove imagem do mapa
 		objetosInteractable.remove(obj);	//remove objeto da lista de objetos temporarios
 		matrixRoom[posAt.getY()][posAt.getX()]=' ';//Apaga o objeto da matriz
 	}
@@ -81,7 +91,7 @@ public class Room {
 			sc.close();
 			
 			
-		} catch (Exception FileNotFoundException) {
+		} catch (FileNotFoundException FileNotFoundException) {
 			System.err.println("Erroooo");
 		}
 		return sala;
@@ -130,10 +140,6 @@ public class Room {
 		return false;
 	}
 
-	public boolean isInteractable(Interactable object) {
-		return manel.getPosition() == ((ImageTile) object).getPosition();
-	}
-	
 	public void manelFall(){//Quando nao tem nada por baixo o Manel cai
 		Point2D manelGround = manel.getPosition().plus(new Vector2D(0, 1));
 		if(!isBlock(manelGround) && !isStairs(manelGround)){
@@ -162,6 +168,8 @@ public class Room {
 		GameObject fixo;
 		Interactable interactable;
 		Movable movel;
+		Bife bife;
+
 		for(int i = 0; i != 10;i++){
 			for(int j = 0; j != 10; j++){
 				switch (matrixRoom[i][j]) {
@@ -169,7 +177,7 @@ public class Room {
 						fixo = new Wall(new Point2D(j,i));
 						ImageGUI.getInstance().addImage(fixo);
 						break;
-						
+					
 					case 'S':
 						fixo = new Stairs(new Point2D(j,i));
 						ImageGUI.getInstance().addImage(fixo);
@@ -196,18 +204,20 @@ public class Room {
 						ImageGUI.getInstance().addImage(movel);
 						objetosMoveis.add(movel);
 						break;
-
-					case 'b':
-						interactable = new Bife(new Point2D(j,i));
-						ImageGUI.getInstance().addImage(interactable);
-						objetosInteractable.add(interactable);
-						break;
-						
+				
 					case 's':
 						interactable = new Sword(new Point2D(j,i));
 						ImageGUI.getInstance().addImage(interactable);
 						objetosInteractable.add(interactable);
 						break; 
+					/* 
+					case 'b':
+						interactable = new Bife(new Point2D(j,i));					
+						ImageGUI.getInstance().addImage(interactable);
+						objetosInteractable.add(interactable);
+						
+						break;
+					*/
 					default:
 						break;
 				}
@@ -227,7 +237,7 @@ public class Room {
 	}
 
 	public void manelStatus() {	
-		ImageGUI.getInstance().setStatusMessage("Vidas: " + manel.getLives() + " Saúde: " + manel.getHealth() +  " Dano: " + manel.getDamage());
+		ImageGUI.getInstance().setStatusMessage("Vidas: " + manel.getLives() + "  Saúde: " + manel.getHealth() +  "  Dano: " + manel.getDamage());
 	}
 	
 	

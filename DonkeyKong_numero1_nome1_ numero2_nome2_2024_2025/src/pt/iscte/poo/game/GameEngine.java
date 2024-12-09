@@ -1,10 +1,10 @@
 package pt.iscte.poo.game;
 
+import java.io.File;
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.observer.Observed;
 import pt.iscte.poo.observer.Observer;
 import pt.iscte.poo.utils.Direction;
-import java.io.File;
 
 public class GameEngine implements Observer {
 
@@ -18,11 +18,7 @@ public class GameEngine implements Observer {
 
 	@Override
 	public void update(Observed source) {
-		
-		currentRoom.manelFall();
-		currentRoom.interactTemp();
-		currentRoom.manelStatus();
-		
+
 		if (ImageGUI.getInstance().wasKeyPressed()) {
 			int k = ImageGUI.getInstance().keyPressed();
 			System.out.println("Keypressed " + k);
@@ -35,7 +31,12 @@ public class GameEngine implements Observer {
 		while (lastTickProcessed < t) {
 			processTick();
 		}
+
+		currentRoom.interact();
+		currentRoom.manelFall();
+		currentRoom.manelStatus();
 		ImageGUI.getInstance().update();
+
 	}
 
 	private void processTick() {

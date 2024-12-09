@@ -1,6 +1,5 @@
 package objects;
 
-import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Point2D;
 
 public class Stairs extends GameObject{
@@ -13,9 +12,6 @@ public class Stairs extends GameObject{
 	public String getName() {
 		return "Stairs";
 	}
-
-
-
 
 	@Override
 	public int getLayer() {

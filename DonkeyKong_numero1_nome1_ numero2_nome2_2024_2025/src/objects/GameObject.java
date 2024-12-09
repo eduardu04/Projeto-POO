@@ -11,23 +11,11 @@ public abstract class GameObject implements ImageTile{
 	}
 
     public abstract String getName();
-    
-
-    
+  
     public Point2D getPosition(){
         return position;
     }
 
-   
-
-
-
     public abstract int getLayer();
 
-
-
-
-
-    
-    
 }
