@@ -10,7 +10,7 @@ public class Bife extends GameObject implements Interactable, Timable{
     }
 	
 	public String getName() {
-		return "Bife";
+		return "GoodMeat";
 	}
 
 	public int getLayer() {

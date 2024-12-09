@@ -185,23 +185,29 @@ public class Room {
 						ImageGUI.getInstance().addImage(fixo);
 						break;
 						
+					case 'H':
+						heroStartingPosition= new Point2D(j,i);
+						manel = new Manel(heroStartingPosition);
+						ImageGUI.getInstance().addImage(manel);
+						break;
+						
 					case 'G':
 						movel = new DonkeyKong(new Point2D(j,i));
 						ImageGUI.getInstance().addImage(movel);
 						objetosMoveis.add(movel);
+						break;
+
+					case 'b':
+						interactable = new Bife(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(interactable);
+						objetosInteractable.add(interactable);
 						break;
 						
 					case 's':
 						interactable = new Sword(new Point2D(j,i));
 						ImageGUI.getInstance().addImage(interactable);
 						objetosInteractable.add(interactable);
-						break;
-						
-					case 'H':
-						heroStartingPosition= new Point2D(j,i);
-						manel = new Manel(heroStartingPosition);
-						ImageGUI.getInstance().addImage(manel);
-						break;
+						break; 
 					default:
 						break;
 				}
