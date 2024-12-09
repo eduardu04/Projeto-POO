@@ -2,6 +2,7 @@ package pt.iscte.poo.game;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import objects.*;
@@ -44,14 +45,20 @@ public class Room {
 		}
 	}
 
-	public void interact(){
-		for(Interactable i : objetosInteractable){
-			if(canInteract(i)){
-				i.interact(manel);
-				deleteObject(i);
+	public void interact() {
+		Iterator<Interactable> iterator = objetosInteractable.iterator();
+	
+		while (iterator.hasNext()) {
+			Interactable i = iterator.next();
+			if (canInteract(i)) {
+				i.interact(manel); 
+				deleteObject(i.getPosition());
+				iterator.remove();		
 			}
 		}
 	}
+	
+	
 	
 	public boolean canInteract(Interactable i) {
 		Point2D manelPosition = manel.getPosition();
@@ -60,12 +67,9 @@ public class Room {
 		return manelPosition.equals(objectPosition);
 	}
 
-	public void deleteObject(Interactable obj) {
-		Point2D posAt = ((ImageTile) obj).getPosition();
-		ImageTile tile= findObjectByPoint(posAt);
-		ImageGUI.getInstance().removeImage(tile);	//remove imagem do mapa
-		objetosInteractable.remove(obj);	//remove objeto da lista de objetos temporarios
-		matrixRoom[posAt.getY()][posAt.getX()]=' ';//Apaga o objeto da matriz
+	public void deleteObject(Point2D posAt) {
+		ImageTile tile = findObjectByPoint(posAt);
+		ImageGUI.getInstance().removeImage(tile); 	
 	}
 	
 	public Direction randomPossibleDirection(Movable ob){
@@ -227,13 +231,15 @@ public class Room {
 		
 	}
 	
-	public ImageTile findObjectByPoint(Point2D p){
-		for(ImageTile i : objetosInteractable){
-			if(i.getPosition().equals(p)){
+	public ImageTile findObjectByPoint(Point2D p) {
+		for (ImageTile i : objetosInteractable) {
+			if (i.getPosition().equals(p)) {
 				return i;
 			}
 		}
-		throw new NullPointerException();
+	
+		System.err.println("Objeto não encontrado na posição " + p);
+		return null;
 	}
 
 	public void manelStatus() {	
