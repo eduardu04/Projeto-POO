@@ -52,19 +52,30 @@ public class Room {
 		while (iterator.hasNext()) {
 			Interactable i = iterator.next();
 			if (canInteract(i)) {
-				i.interact(manel); 
-				deleteObject(i.getPosition());
-				iterator.remove();		
+				i.interact(manel);
+				System.out.println("A interagir com objeto: " + i.getName());
+
+				if(i.isDeletable())	{  
+					deleteObject(i.getPosition());
+					iterator.remove();		
+				}
 			}
 		}
 	}
 	
-	
-	
 	public boolean canInteract(Interactable i) {
 		Point2D manelPosition = manel.getPosition();
 		Point2D objectPosition = i.getPosition();
-	
+		
+		if (isTrap(objectPosition)) {
+			Point2D manelGround = manel.getPosition().plus(new Vector2D(0, 1));
+
+			if (manelGround.equals(objectPosition)) {
+				System.out.println("Armadilha ativada!");
+				return true;
+			}
+		}
+
 		return manelPosition.equals(objectPosition);
 	}
 
@@ -137,6 +148,14 @@ public class Room {
 		return false;
 	}
 
+	public boolean isTrap(Point2D p){
+		char c = matrixRoom[p.getY()][p.getX()];
+		if(c == 't'){
+			return true;
+		}
+		return false;
+	}
+
 	public boolean isDoor(Point2D p) {
 		char c = matrixRoom[p.getY()][p.getX()];
 		if(c == '0') {
@@ -188,8 +207,9 @@ public class Room {
 						break;
 						
 					case 't':
-						fixo = new Trap(new Point2D(j,i));
-						ImageGUI.getInstance().addImage(fixo);
+						Trap trap = new Trap(new Point2D(j,i));
+						objetosInteractable.add(trap);
+						ImageGUI.getInstance().addImage(trap);
 						break;
 						
 					case '0':
@@ -204,9 +224,10 @@ public class Room {
 						break;
 						
 					case 'G':
-						movel = new DonkeyKong(new Point2D(j,i));
-						ImageGUI.getInstance().addImage(movel);
-						objetosMoveis.add(movel);
+						DonkeyKong donkeyKong = new DonkeyKong(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(donkeyKong);
+						objetosMoveis.add(donkeyKong);
+						objetosInteractable.add(donkeyKong);
 						break;
 				
 					case 's':
@@ -241,7 +262,27 @@ public class Room {
 		return null;
 	}
 
+	public void restartLevel(){
+
+	}
+
+	public void respawnManel(int lives, Point2D startingPosition){
+		Manel deadManel = manel;
+		ImageGUI.getInstance().removeImage(deadManel);
+		
+		manel = new Manel(heroStartingPosition);
+		manel.setLives(lives);
+		
+		ImageGUI.getInstance().addImage(manel);
+		
+	}
+
 	public void manelStatus() {	
+		if(manel.getHealth() < 0){
+			respawnManel(manel.getLives() - 1, heroStartingPosition);
+			
+		}
+
 		ImageGUI.getInstance().setStatusMessage("Vidas: " + manel.getLives() + "  Saúde: " + manel.getHealth() +  "  Dano: " + manel.getDamage());
 	}
 	
