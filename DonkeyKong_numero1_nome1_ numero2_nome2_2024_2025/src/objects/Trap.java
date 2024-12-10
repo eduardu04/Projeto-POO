@@ -19,7 +19,7 @@ public class Trap extends GameObject implements Interactable{
 
 	@Override
 	public void interact(Manel manel) {
-		manel.hurtManel(10);
+		manel.hurt(10);
 	}
 
 	@Override
@@ -27,3 +27,4 @@ public class Trap extends GameObject implements Interactable{
 		return false;
 	}
 }
+ 

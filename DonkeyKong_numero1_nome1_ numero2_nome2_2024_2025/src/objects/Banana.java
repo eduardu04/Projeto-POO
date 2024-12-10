@@ -22,7 +22,7 @@ public class Banana extends GameObject implements Interactable, Movable{
 	
 	@Override
 	public void interact(Manel manel) {
-		manel.hurtManel(10);
+		manel.hurt(10);
 	}
 
     @Override
@@ -33,6 +33,11 @@ public class Banana extends GameObject implements Interactable, Movable{
 	@Override
 	public void move(Direction d) {
 		super.position = super.position.plus(d.asVector());	
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
 	}
 	
 }
