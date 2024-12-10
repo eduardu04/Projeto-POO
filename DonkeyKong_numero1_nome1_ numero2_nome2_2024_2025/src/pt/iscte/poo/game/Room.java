@@ -20,12 +20,30 @@ public class Room {
 	private static List<Interactable> objetosInteractable;
 	private static List<Movable> objetosMoveis;
 	private static List<Timable> objetosTimable;
+	private int lastTickProcessedRoom;
 	
 	public Room() {
 		addFloor();
 		objetosInteractable = new ArrayList<>();
 		objetosMoveis = new ArrayList<>();
 		objetosTimable = new ArrayList<>();
+	}
+
+	public void processRoom(){
+		manelFall();
+		manelStatus();
+		
+		if(lastTickProcessedRoom % 3 == 0){
+			moveMovables();
+		}
+		if(lastTickProcessedRoom % 5 == 0)	{
+			attack();
+		}
+
+		interact();
+		processTimables();
+		
+		lastTickProcessedRoom++;
 	}
 
 	public void moveManel(Direction d) {
@@ -333,7 +351,4 @@ public class Room {
 
 		ImageGUI.getInstance().setStatusMessage("Vidas: " + manel.getLives() + "  Saúde: " + manel.getHealth() +  "  Dano: " + manel.getDamage());
 	}
-	
-	
-
 }

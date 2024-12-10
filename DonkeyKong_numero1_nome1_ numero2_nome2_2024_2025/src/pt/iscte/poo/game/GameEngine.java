@@ -32,23 +32,12 @@ public class GameEngine implements Observer {
 			processTick();
 		}
 
-		currentRoom.processTimables();
-		currentRoom.interact();
-
-		if(lastTickProcessed % 3 == 0)	{
-			currentRoom.attack();
-		}
-
-		currentRoom.manelFall();
-		currentRoom.manelStatus();		
+		currentRoom.processRoom();	
 		ImageGUI.getInstance().update();
 
 	}
 
 	private void processTick() {
-		if(lastTickProcessed%2==0){
-			currentRoom.moveMovables();
-		}
 		System.out.println("Tic Tac : " + lastTickProcessed);
 		lastTickProcessed++;
 	}
