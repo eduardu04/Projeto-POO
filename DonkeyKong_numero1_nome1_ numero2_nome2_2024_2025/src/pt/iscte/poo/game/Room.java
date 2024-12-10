@@ -36,10 +36,18 @@ public class Room {
 	}
 
 	public void moveMovables(){ 
-		for(Movable i : objetosMoveis){
+		Iterator<Movable> iterator = objetosMoveis.iterator();
+	
+		while (iterator.hasNext()) {
+			Movable i = iterator.next();
+			if(i.getName() == "Banana"){
+					i.move(Direction.DOWN);
+			} else {
 			i.move(randomPossibleDirection(i));
+			}
 		}
 	}
+
 	public void processTimables(){
 		for(Timable i : objetosTimable){
 			i.processTick();
@@ -51,6 +59,7 @@ public class Room {
 	
 		while (iterator.hasNext()) {
 			Interactable i = iterator.next();
+			
 			if (canInteract(i)) {
 				i.interact(manel);
 				System.out.println("A interagir com objeto: " + i.getName());
@@ -63,6 +72,20 @@ public class Room {
 		}
 	}
 	
+	public void attack(){
+		Iterator<Interactable> iterator = objetosInteractable.iterator();
+	
+		while (iterator.hasNext()) {
+			Interactable i = iterator.next();
+			
+			if(i.getName() == "DonkeyKong")	{
+				Banana banana = new Banana(i.getPosition());
+				ImageGUI.getInstance().addImage(banana);
+				objetosMoveis.add(banana);
+			}
+		}
+	}
+
 	public boolean canInteract(Interactable i) {
 		Point2D manelPosition = manel.getPosition();
 		Point2D objectPosition = i.getPosition();
@@ -262,7 +285,27 @@ public class Room {
 		return null;
 	}
 
+	public void restartLevel(){
+
+	}
+
+	public void respawnManel(int lives, Point2D startingPosition){
+		Manel deadManel = manel;
+		ImageGUI.getInstance().removeImage(deadManel);
+		
+		manel = new Manel(heroStartingPosition);
+		manel.setLives(lives);
+		
+		ImageGUI.getInstance().addImage(manel);
+		
+	}
+
 	public void manelStatus() {	
+		if(manel.getHealth() < 0){
+			respawnManel(manel.getLives() - 1, heroStartingPosition);
+			
+		}
+
 		ImageGUI.getInstance().setStatusMessage("Vidas: " + manel.getLives() + "  Saúde: " + manel.getHealth() +  "  Dano: " + manel.getDamage());
 	}
 	

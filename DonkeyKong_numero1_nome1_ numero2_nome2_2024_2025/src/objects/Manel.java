@@ -2,13 +2,15 @@ package objects;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
-public class Manel extends GameObject implements Movable, Living{
-	private int damageLevel = 0;
+public class Manel extends GameObject implements Movable{
+	private int damageLevel = 25;
 	private int lives = 3;
 	private int health = 100;
+	private Point2D initialPosition;
 	
-	public Manel(Point2D initialPosition){
+	public Manel(Point2D initialPosition)	{
 		super(initialPosition);
+		this.initialPosition = initialPosition;
 	}
 
 	@Override
@@ -26,12 +28,18 @@ public class Manel extends GameObject implements Movable, Living{
 		return 2;
 	}
 	
+	public void hurtManel(int damage) {
+		health -= damage;
+	}
 	
-	@Override
+	public void healManel(int heal) {
+		health += heal;
+	}
+
 	public int getDamage(){
 		return damageLevel;
 	}
-	@Override
+	
 	public int getHealth() {
 		return health;
 	}
@@ -44,14 +52,11 @@ public class Manel extends GameObject implements Movable, Living{
 		damageLevel += 15;
 	}
 
-	@Override
-	public void hurt(int damage) {
-		health -= damage;
+	public void setLives(int lives){
+		this.lives = lives;
 	}
 
-	
-	public void heal(int heal) {
-		health += heal;
+	public void setHealth(int health){
+		this.health = health;
 	}
-
 }
