@@ -106,7 +106,8 @@ public class Room {
 		if(indexes.size()==0){
 			return -1;
 		}
-		return indexes.get((int)Math.random()*indexes.size());
+		System.out.println("tamanho array"+ indexes.size());
+		return indexes.get((int)(Math.random()*indexes.size()));
 
 	}
 

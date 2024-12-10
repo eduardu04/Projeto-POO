@@ -35,7 +35,7 @@ public class GameEngine implements Observer {
 		currentRoom.processTimables();
 		currentRoom.interact();
 
-		if(lastTickProcessed % 10 == 0)	{
+		if(lastTickProcessed % 3 == 0)	{
 			currentRoom.attack();
 		}
 
