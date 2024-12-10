@@ -36,6 +36,21 @@ public class DonkeyKong extends GameObject implements Movable, Interactable, Liv
     }
 
     public void interact(Manel manel) {
-        hurtDonkeyKong(manel.getDamage());
+        hurt(manel.getDamage());
+    }
+
+    @Override
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
+    public int getDamage() {
+        return damage;
+    }
+
+    @Override
+    public void hurt(int damage) {
+        health-= damage;
     }
 }

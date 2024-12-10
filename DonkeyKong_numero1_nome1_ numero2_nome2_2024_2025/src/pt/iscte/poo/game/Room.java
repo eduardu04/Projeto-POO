@@ -41,7 +41,15 @@ public class Room {
 		while (iterator.hasNext()) {
 			Movable i = iterator.next();
 			if(i.getName() == "Banana"){
-					i.move(Direction.DOWN);
+				Point2D nextPoint = i.getPosition().plus(Direction.DOWN.asVector());
+					if(insideMap(nextPoint)){
+						i.move(Direction.DOWN);
+					}else{
+						System.out.println("A proxima direcao esta fora do mapa");
+						deleteObject(i.getPosition());
+						iterator.remove();
+						objetosInteractable.remove(i);
+					}
 			} else {
 			i.move(randomPossibleDirection(i));
 			}
@@ -59,31 +67,47 @@ public class Room {
 	
 		while (iterator.hasNext()) {
 			Interactable i = iterator.next();
-			
 			if (canInteract(i)) {
 				i.interact(manel);
 				System.out.println("A interagir com objeto: " + i.getName());
 
 				if(i.isDeletable())	{  
 					deleteObject(i.getPosition());
-					iterator.remove();		
+					iterator.remove();
+					objetosMoveis.remove(i);
+					System.out.println("Apagando " + i.getName());		
 				}
 			}
+			
 		}
+
+		
 	}
 	
 	public void attack(){
-		Iterator<Interactable> iterator = objetosInteractable.iterator();
-	
-		while (iterator.hasNext()) {
-			Interactable i = iterator.next();
-			
-			if(i.getName() == "DonkeyKong")	{
-				Banana banana = new Banana(i.getPosition());
-				ImageGUI.getInstance().addImage(banana);
-				objetosMoveis.add(banana);
+		if(randomDonkeyIndex()!= -1){
+			Banana banana = new Banana(objetosInteractable.get(randomDonkeyIndex()).getPosition());
+			ImageGUI.getInstance().addImage(banana);
+			objetosMoveis.add(banana);
+			objetosInteractable.add(banana);
+		}
+		
+		
+		
+	}
+
+	public int randomDonkeyIndex(){//dá um indice aleatório de um Donkey Kong na lista dos Interactable, retorna -1 se não houver gorilas no mapa
+		List<Integer> indexes = new ArrayList<>();
+		for(int i = 0; i != objetosInteractable.size(); i++){
+			if(objetosInteractable.get(i).getName()=="DonkeyKong"){
+				indexes.add(i);
 			}
 		}
+		if(indexes.size()==0){
+			return -1;
+		}
+		return indexes.get((int)Math.random()*indexes.size());
+
 	}
 
 	public boolean canInteract(Interactable i) {

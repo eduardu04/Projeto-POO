@@ -27,3 +27,4 @@ public class Trap extends GameObject implements Interactable{
 		return false;
 	}
 }
+ 
