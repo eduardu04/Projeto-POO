@@ -37,6 +37,6 @@ public class Door extends GameObject implements  Interactable{
 
     @Override
     public boolean isDeletable() {
-        return true;
+        return false;
     }
 }

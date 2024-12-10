@@ -15,7 +15,7 @@ public class Room {
 	
 	private static Point2D heroStartingPosition;
 	private static Manel manel;
-	private String level;
+	private static int level;
 	private static char[][] matrixRoom;
 	private static List<Interactable> objetosInteractable;
 	private static List<Movable> objetosMoveis;
@@ -92,8 +92,7 @@ public class Room {
 				if(i.isDeletable())	{  
 					deleteObject(i.getPosition());
 					iterator.remove();
-					objetosMoveis.remove(i);
-					System.out.println("Apagando " + i.getName());		
+					objetosMoveis.remove(i);	
 				}
 			}
 			
@@ -124,7 +123,6 @@ public class Room {
 		if(indexes.size()==0){
 			return -1;
 		}
-		System.out.println("tamanho array"+ indexes.size());
 		return indexes.get((int)(Math.random()*indexes.size()));
 
 	}
@@ -163,7 +161,7 @@ public class Room {
 		try {
 			//scanear mapa
 			Scanner sc = new Scanner(f);
-			sala.level = sc.nextLine();
+			sala.level = Integer.valueOf(sc.nextLine().charAt(1))-48;
 			String letras = "";
 			while(sc.hasNext()){
 				letras+=sc.nextLine();
@@ -176,6 +174,7 @@ public class Room {
 		} catch (FileNotFoundException FileNotFoundException) {
 			System.err.println("Erroooo");
 		}
+		System.out.println("Nível: "+sala.level);
 		return sala;
 	}
 
@@ -248,7 +247,6 @@ public class Room {
 		char[][] matr = new char[10][10];
 		for(int i=0; i!= s.length();i++){
 			matr[i/10][i%10]=s.charAt(i);
-			System.out.println("indice ["+ i/10+"]"+ "["+i%10+"]"+ " é "+s.charAt(i) );
 		}
 		return matr;
 	}
@@ -279,8 +277,9 @@ public class Room {
 						break;
 						
 					case '0':
-						fixo = new Door(new Point2D(j,i));
-						ImageGUI.getInstance().addImage(fixo);
+						Door door = new Door(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(door);
+						objetosInteractable.add(door);
 						break;
 						
 					case 'H':
