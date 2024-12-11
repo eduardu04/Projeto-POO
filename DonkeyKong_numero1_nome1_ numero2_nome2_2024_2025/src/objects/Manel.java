@@ -56,6 +56,10 @@ public class Manel extends GameObject implements Movable, Living{
 		this.lives = lives;
 	}
 
+	public void setDamageLevel(int damageLevel){
+		this.damageLevel = damageLevel;
+	}
+
 	public void setHealth(int health){
 		this.health = health;
 	}

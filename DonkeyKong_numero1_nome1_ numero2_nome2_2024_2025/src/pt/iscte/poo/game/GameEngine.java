@@ -1,6 +1,5 @@
 package pt.iscte.poo.game;
 
-import java.io.File;
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.observer.Observed;
 import pt.iscte.poo.observer.Observer;
@@ -8,8 +7,8 @@ import pt.iscte.poo.utils.Direction;
 
 public class GameEngine implements Observer {
 
-	
-	private Room currentRoom = Room.readRoomFile(new File("rooms/room0.txt"));
+	private int levelNum = 0;
+	private Room currentRoom = new Room(levelNum);
 	private int lastTickProcessed = 0;
 	
 	public GameEngine() {
@@ -34,6 +33,15 @@ public class GameEngine implements Observer {
 
 		currentRoom.processRoom();	
 		ImageGUI.getInstance().update();
+
+		if(currentRoom.getLoadNextLevel()){
+			if(levelNum == 2){
+				System.out.println("Jogo completado! Parabéns");
+				return;
+			}
+			levelNum++;
+			currentRoom = new Room(levelNum);
+		}
 
 	}
 

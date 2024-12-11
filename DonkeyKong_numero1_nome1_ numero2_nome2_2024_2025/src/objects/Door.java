@@ -32,11 +32,14 @@ public class Door extends GameObject implements  Interactable{
     @Override
     public void interact(Manel manel) {
        openDoor();
-       System.out.println("Porta aberta!");
     }
 
     @Override
     public boolean isDeletable() {
-        return true;
+        return false;
+    }
+
+    public int getDoorStatus() {
+        return doorStatus;
     }
 }
