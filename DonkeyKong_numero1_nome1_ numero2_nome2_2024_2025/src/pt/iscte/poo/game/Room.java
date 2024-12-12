@@ -125,8 +125,6 @@ public class Room {
 			}
 			
 		}
-
-		
 	}
 	
 	public void attack(){
@@ -159,7 +157,7 @@ public class Room {
 		
 		Point2D objectPosition = i.getPosition(); 
 		
-		if (i.getName()=="Trap") {
+		if (i.getName().equals("Trap") || i .getName().equals("Wall")){
 			Point2D manelGround = manel.getPosition().plus(new Vector2D(0, 1));
 
 			if (manelGround.equals(objectPosition)) {
@@ -256,7 +254,7 @@ public class Room {
 
 	public boolean isBlock(Point2D p){
 		char c = matrixRoom[p.getY()][p.getX()];
-		if(c== 'W'||c== 't'){
+		if(c== 'W'||c== 't'|| c == 'h'){
 			return true;
 		}
 		return false;
@@ -283,7 +281,7 @@ public class Room {
 
 	public boolean isTrap(Point2D p){
 		char c = matrixRoom[p.getY()][p.getX()];
-		if(c == 't'){
+		if(c == 't' && c == 'h'){
 			return true;
 		}
 		return false;
@@ -345,6 +343,13 @@ public class Room {
 						objetosInteractable.add(trap);
 						ImageGUI.getInstance().addImage(trap);
 						break;
+					
+					case 'h':
+						Trap trapHidden = new Trap(new Point2D(j,i));
+						trapHidden.setHidden();
+						objetosInteractable.add(trapHidden);
+						ImageGUI.getInstance().addImage(trapHidden);
+						break;
 						
 					case '0':
 					
@@ -402,9 +407,6 @@ public class Room {
 		return null;
 	}
 
-	public void restartLevel(){
-
-	}
 
 	
 

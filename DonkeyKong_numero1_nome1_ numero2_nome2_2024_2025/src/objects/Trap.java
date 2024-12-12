@@ -2,15 +2,34 @@ package objects;
 import pt.iscte.poo.utils.Point2D;
 
 public class Trap extends GameObject implements Interactable{
+	private boolean isHidden = false;
+	private String name = "Trap";
+	
+
 
 	public Trap(Point2D initialPosition) {
 		super(initialPosition);
 	}
 
+	public void setHidden(){
+		isHidden=true;
+		setName("Wall");
+	}
+
+	public boolean isHidden(){
+		return isHidden;
+	}
+
+	public void setName(String n){
+		name=n;
+	}
+
     @Override
 	public String getName() {
-		return "Trap";
+		return name;
 	}
+
+	
 
 	@Override
 	public int getLayer() {
@@ -19,6 +38,9 @@ public class Trap extends GameObject implements Interactable{
 
 	@Override
 	public void interact(Manel manel) {
+		if(isHidden()){
+			setName("Trap");
+		}
 		manel.hurt(10);
 	}
 
@@ -26,5 +48,9 @@ public class Trap extends GameObject implements Interactable{
 	public boolean isDeletable() {
 		return false;
 	}
+
+	
+
 }
+
  
