@@ -25,6 +25,7 @@ public class Room {
 	private int lastTickProcessedRoom;
 	private boolean loadNextLevel=false;
 	private static int levelNum;
+	private static Princesa princesa;
 	
 	
 
@@ -165,7 +166,7 @@ public class Room {
 				return true;
 			}
 		}
-		if (i.getName()=="DonkeyKong"&& arroundManel(i)) {
+		if (i.getName().equals("DonkeyKong")&& arroundManel(i)) {
 			System.out.println("Atacando macaco");
 			return true;
 
@@ -387,6 +388,13 @@ public class Room {
 						objetosInteractable.add(bife);  
 						objetosTimable.add(bife);  
 						break;
+
+					case 'P':
+						Princesa newPrincesa = new Princesa(new Point2D (j,i));
+						princesa = newPrincesa;
+						ImageGUI.getInstance().addImage(newPrincesa);
+						objetosInteractable.add(newPrincesa);
+					break;
 					default:
 						break;
 				}
