@@ -364,7 +364,7 @@ public class Room {
 		return loadNextLevel;
 	}
 
-	public static void respawnManel(Point2D startingPosition, boolean killed){
+	public void respawnManel(Point2D startingPosition, boolean killed){
 		Manel deadManel = manel;
 		ImageGUI.getInstance().removeImage(deadManel);
 		int lives = 0;
