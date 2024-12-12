@@ -402,12 +402,6 @@ public class Room {
 		return null;
 	}
 
-	public void restartLevel(){
-
-	}
-
-	
-
 	public void manelStatus() {	
 		if(manel.getHealth() < 0){
 			respawnManel(heroStartingPosition,true);
