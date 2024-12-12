@@ -34,8 +34,7 @@ public class GameEngine implements Observer {
 		currentRoom.processRoom();	
 		ImageGUI.getInstance().update();
 
-		if(currentRoom.getLoadNextLevel()){
-			
+		if(currentRoom.getLoadNextLevel()){	
 			if(levelNum == 2){
 				System.out.println("Jogo completado! Parabéns");
 				return;
@@ -50,9 +49,4 @@ public class GameEngine implements Observer {
 		System.out.println("Tic Tac : " + lastTickProcessed);
 		lastTickProcessed++;
 	}
-
-	
-
-
-
 }
