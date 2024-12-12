@@ -2,11 +2,13 @@ package objects;
 
 
 
+import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
-public class DonkeyKong extends GameObject implements Movable, Interactable{
-    private int vida = 60;
+public class DonkeyKong extends GameObject implements Movable, Interactable, Living{
+    private int health = 60;
+    private int damage = 35;
 
     public DonkeyKong(Point2D initialPosition){
         super(initialPosition);
@@ -27,17 +29,39 @@ public class DonkeyKong extends GameObject implements Movable, Interactable{
 		super.position = super.position.plus(d.asVector());	
 	}
 
-    public void hurtDonkeyKong(int damage){
-        vida -= damage;
-    }
+
 
     @Override
     public boolean isDeletable(){
-        return vida <= 0;
+
+        return health <= 0;
     }
 
     public void interact(Manel manel) {
-        hurtDonkeyKong(manel.getDamage());
+        if(getHealth()<=manel.getDamage()){
+            hurt(manel.getDamage());
+            ImageGUI.getInstance().setStatusMessage("Donkey Kong was Killed!");
+        }else{
+            hurt(manel.getDamage());
+            ImageGUI.getInstance().setStatusMessage("Donkey Kong was atacked! Life: "+ getHealth()+"/100");
+        }
+        
+        
+
     }
-    
+
+    @Override
+    public int getHealth() {
+        return health;
+    }
+
+    @Override
+    public int getDamage() {
+        return damage;
+    }
+
+    @Override
+    public void hurt(int damage) {
+        health-= damage;
+    }
 }

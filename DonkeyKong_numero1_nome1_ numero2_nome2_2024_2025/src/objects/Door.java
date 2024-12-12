@@ -1,22 +1,19 @@
 package objects;
-
 import pt.iscte.poo.utils.Point2D;
 
-public class Door extends GameObject{
-    private boolean closedDoor;
-
+public class Door extends GameObject implements  Interactable{
+    private int doorStatus = -1;
+    
     public Door(Point2D initialPosition){
         super(initialPosition);
-        closedDoor=true;
     }
 
     @Override
     public String getName() {
-        if(closedDoor){
+        if(doorStatus == -1){
             return "DoorClosed";
         }
         return "DoorOpen";
-        
     }
 
     @Override
@@ -25,7 +22,25 @@ public class Door extends GameObject{
     }
 
     public void openDoor(){
-        closedDoor=false;
+        doorStatus = 0;
     }
-    
+
+    public boolean isClosed() {
+        return doorStatus == -1;
+    }
+
+    @Override
+    public void interact(Manel manel) {
+       openDoor();
+       System.out.println("Porta aberta!");
+    }
+
+    @Override
+    public boolean isDeletable() {
+        return false;
+    }
+
+    public int getDoorStatus(){
+        return doorStatus;
+    }
 }
