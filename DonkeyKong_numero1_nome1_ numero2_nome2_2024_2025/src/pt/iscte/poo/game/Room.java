@@ -15,17 +15,58 @@ public class Room {
 	
 	private static Point2D heroStartingPosition;
 	private static Manel manel;
-	private String level;
 	private static char[][] matrixRoom;
+	private static String level;
 	private static List<Interactable> objetosInteractable;
 	private static List<Movable> objetosMoveis;
+	private static Door currentDoor;
 	private static List<Timable> objetosTimable;
+	private static List<GameObject> objetosFixos;
+	private int lastTickProcessedRoom;
+	private boolean loadNextLevel=false;
+	private static int levelNum;
 	
-	public Room() {
+	
+
+	public Room(int levelNum) {
+		this.levelNum = levelNum;
+		level = "room" + levelNum + ".txt";
+
+		if(levelNum > 0){
+			clearPreviousLevel();
+			respawnManel(heroStartingPosition, false);
+		}
+
 		addFloor();
 		objetosInteractable = new ArrayList<>();
 		objetosMoveis = new ArrayList<>();
 		objetosTimable = new ArrayList<>();
+		objetosFixos = new ArrayList<>();
+		
+		System.out.println("A carregar nível: " + level);
+		readRoomFile(level);
+	}
+
+	public void processRoom(){
+		manelFall();
+		manelStatus();
+
+		if(lastTickProcessedRoom % 3 == 0){
+			moveMovables();
+		}
+		if(lastTickProcessedRoom % 8 == 0)	{
+			attack();
+		}
+		
+		interact();
+		processTimables();
+		
+		if(currentDoor.getDoorStatus() == 0)	{
+			loadNextLevel = true;
+			System.out.println("A carregar o próximo nível!");
+		}
+	
+		lastTickProcessedRoom++;
 	}
 
 	public void moveManel(Direction d) {
@@ -36,10 +77,31 @@ public class Room {
 	}
 
 	public void moveMovables(){ 
-		for(Movable i : objetosMoveis){
-			i.move(randomPossibleDirection(i));
+		Iterator<Movable> iterator = objetosMoveis.iterator();
+	
+		while (iterator.hasNext()) {
+			Movable i = iterator.next();
+			if(i.getName() == "Banana"){
+				Point2D nextPoint = i.getPosition().plus(Direction.DOWN.asVector());
+					if(insideMap(nextPoint)){
+						i.move(Direction.DOWN);
+					}else{
+						System.out.println("A proxima direcao esta fora do mapa");
+						deleteObject(i.getPosition());
+						iterator.remove();
+						objetosInteractable.remove(i);
+					}
+			} else {
+				try {
+					i.move(randomPossibleDirection(i));
+				} catch (Exception IndexOutOfBoundsException) {
+					// caso nao haja direção pra ir
+				}
+			
+			}
 		}
 	}
+
 	public void processTimables(){
 		for(Timable i : objetosTimable){
 			i.processTick();
@@ -57,17 +119,47 @@ public class Room {
 
 				if(i.isDeletable())	{  
 					deleteObject(i.getPosition());
-					iterator.remove();		
+					iterator.remove();
+					objetosMoveis.remove(i);	
 				}
 			}
+			
 		}
+
+		
 	}
 	
-	public boolean canInteract(Interactable i) {
-		Point2D manelPosition = manel.getPosition();
-		Point2D objectPosition = i.getPosition();
+	public void attack(){
+		if(randomDonkeyIndex()!= -1){
+			Banana banana = new Banana(objetosInteractable.get(randomDonkeyIndex()).getPosition());
+			ImageGUI.getInstance().addImage(banana);
+			objetosMoveis.add(banana);
+			objetosInteractable.add(banana);
+		}
 		
-		if (isTrap(objectPosition)) {
+		
+		
+	}
+
+	public int randomDonkeyIndex(){//dá um indice aleatório de um Donkey Kong na lista dos Interactable, retorna -1 se não houver gorilas no mapa
+		List<Integer> indexes = new ArrayList<>();
+		for(int i = 0; i != objetosInteractable.size(); i++){
+			if(objetosInteractable.get(i).getName()=="DonkeyKong"){
+				indexes.add(i);
+			}
+		}
+		if(indexes.size()==0){
+			return -1;
+		}
+		return indexes.get((int)(Math.random()*indexes.size()));
+
+	}
+
+	public boolean canInteract(Interactable i) {
+		
+		Point2D objectPosition = i.getPosition(); 
+		
+		if (i.getName()=="Trap") {
 			Point2D manelGround = manel.getPosition().plus(new Vector2D(0, 1));
 
 			if (manelGround.equals(objectPosition)) {
@@ -75,8 +167,26 @@ public class Room {
 				return true;
 			}
 		}
+		if (i.getName()=="DonkeyKong"&& arroundManel(i)) {
+			System.out.println("Atacando macaco");
+			return true;
 
-		return manelPosition.equals(objectPosition);
+			
+		}
+
+		return manel.getPosition().equals(objectPosition);
+	}
+
+	public boolean arroundManel(Interactable i){
+		Point2D down = manel.getPosition().plus(new Vector2D(0, 1));
+		Point2D up = manel.getPosition().plus(new Vector2D(0, -1));
+		Point2D right = manel.getPosition().plus(new Vector2D(1, 0));
+		Point2D left = manel.getPosition().plus(new Vector2D(-1, 0));
+		
+		if(down.equals(i.getPosition())|| up.equals(i.getPosition())||right.equals(i.getPosition())||left.equals(i.getPosition())){
+			return true;
+		}
+		return false;
 	}
 
 	public void deleteObject(Point2D posAt) {
@@ -85,32 +195,39 @@ public class Room {
 	}
 	
 	public Direction randomPossibleDirection(Movable ob){
-		Direction d = Direction.random();
-		while(!canMove(ob,d)){
-			d = Direction.random();
+		List<Direction> possDirections = new ArrayList<>();
+		for(Direction d : Direction.values()){
+			if(canMove(ob, d)){
+				possDirections.add(d);
+			}
 		}
-		return d;
+		
+		return possDirections.get((int)(Math.random()*possDirections.size()));
 	}
 
-	public static Room readRoomFile(File f) {
-		Room sala = new Room();
-		try {
-			//scanear mapa
-			Scanner sc = new Scanner(f);
-			sala.level = sc.nextLine();
-			String letras = "";
-			while(sc.hasNext()){
-				letras+=sc.nextLine();
+	public void readRoomFile(String f) {	
+		String levelPath = "rooms/" + f;
+		File file = new File(levelPath);		
+		System.out.println("A ler ficheiro: " + levelPath);
+		
+		try (Scanner sc = new Scanner(file)) { 
+			if(levelNum != 2){
+				level = sc.nextLine(); 
 			}
-			matrixRoom=stringToMatrix(letras);
-			loadMap();//carrega o mapa da mATRIxroom para o mapa mesmo
+
+			String letras = "";
+
+			while (sc.hasNextLine()) {
+				letras += sc.nextLine();
+			}
+			
+			matrixRoom = stringToMatrix(letras); 
+			loadMap(); 
 			sc.close();
-			
-			
-		} catch (FileNotFoundException FileNotFoundException) {
-			System.err.println("Erroooo");
+		} catch (FileNotFoundException e) {
+			System.err.println("Ficheiro não encontrado! " + levelPath);
 		}
-		return sala;
+		
 	}
 
 	public static void addFloor(){
@@ -123,15 +240,19 @@ public class Room {
 
 	public boolean canMove(Movable ob, Direction d){
 		Point2D nextPosition = ob.getPosition().plus(d.asVector());
-		if(insideMap(nextPosition) && !isBlock(nextPosition)){
+		if(insideMap(nextPosition) && !isBlock(nextPosition) && !isDonkeyKong(nextPosition) && !manel.getPosition().equals(nextPosition)){
+
 			if(d.name()=="UP" && !isStairs(ob.getPosition())){//Caso o objeto nao esteja numa escada não pode subir de posição ou seja "voar"!
 				return false;
 			}
+			
 			return true;
 		}
 		
 		return false;
 	}
+
+
 
 	public boolean isBlock(Point2D p){
 		char c = matrixRoom[p.getY()][p.getX()];
@@ -140,6 +261,18 @@ public class Room {
 		}
 		return false;
 	}
+
+	public boolean isDonkeyKong(Point2D p){//método para saber se naquele ponto está um gorila
+		for(Movable i : objetosMoveis){
+			if(i.getName()=="DonkeyKong"){
+				if(i.getPosition().equals(p)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public boolean isStairs(Point2D p){
 		char c = matrixRoom[p.getY()][p.getX()];
 		if(c == 'S'){
@@ -182,7 +315,6 @@ public class Room {
 		char[][] matr = new char[10][10];
 		for(int i=0; i!= s.length();i++){
 			matr[i/10][i%10]=s.charAt(i);
-			System.out.println("indice ["+ i/10+"]"+ "["+i%10+"]"+ " é "+s.charAt(i) );
 		}
 		return matr;
 	}
@@ -198,11 +330,13 @@ public class Room {
 				switch (matrixRoom[i][j]) {
 					case 'W':			
 						fixo = new Wall(new Point2D(j,i));
+						objetosFixos.add(fixo);
 						ImageGUI.getInstance().addImage(fixo);
 						break;
 					
 					case 'S':
 						fixo = new Stairs(new Point2D(j,i));
+						objetosFixos.add(fixo);
 						ImageGUI.getInstance().addImage(fixo);
 						break;
 						
@@ -213,14 +347,20 @@ public class Room {
 						break;
 						
 					case '0':
-						fixo = new Door(new Point2D(j,i));
-						ImageGUI.getInstance().addImage(fixo);
+					
+						Door door = new Door(new Point2D(j,i));
+						ImageGUI.getInstance().addImage(door);
+						objetosInteractable.add(door);
+						currentDoor=door;
 						break;
-						
+					
+					
 					case 'H':
 						heroStartingPosition= new Point2D(j,i);
-						manel = new Manel(heroStartingPosition);
-						ImageGUI.getInstance().addImage(manel);
+						if(levelNum == 0){ 
+							manel = new Manel(heroStartingPosition);
+							ImageGUI.getInstance().addImage(manel);
+						}
 						break;
 						
 					case 'G':
@@ -266,26 +406,78 @@ public class Room {
 
 	}
 
-	public void respawnManel(int lives, Point2D startingPosition){
-		Manel deadManel = manel;
-		ImageGUI.getInstance().removeImage(deadManel);
-		
-		manel = new Manel(heroStartingPosition);
-		manel.setLives(lives);
-		
-		ImageGUI.getInstance().addImage(manel);
-		
-	}
+	
 
 	public void manelStatus() {	
 		if(manel.getHealth() < 0){
-			respawnManel(manel.getLives() - 1, heroStartingPosition);
+			respawnManel(heroStartingPosition,true);
 			
 		}
 
 		ImageGUI.getInstance().setStatusMessage("Vidas: " + manel.getLives() + "  Saúde: " + manel.getHealth() +  "  Dano: " + manel.getDamage());
 	}
-	
-	
 
+	public boolean getLoadNextLevel(){
+		return loadNextLevel;
+	}
+
+	public void clearPreviousLevel(){	
+		clearMovables();
+		clearInteractables();
+		clearMap();
+	}
+
+	public void clearMovables(){
+		Iterator<Movable> iterator = objetosMoveis.iterator();
+
+		while(iterator.hasNext()) {
+			Movable i = iterator.next();
+			ImageGUI.getInstance().removeImage(i);
+		}
+	}
+
+	public void clearInteractables(){
+		Iterator<Interactable> iterator = objetosInteractable.iterator();
+
+		while(iterator.hasNext()) {
+			Interactable i = iterator.next();
+			ImageGUI.getInstance().removeImage(i);
+		}
+	}
+
+	public void clearMap(){
+		Iterator<GameObject> iterator = objetosFixos.iterator();
+
+		while(iterator.hasNext()){
+			GameObject i = iterator.next();
+			ImageGUI.getInstance().removeImage(i);
+		}
+	}
+
+	public void respawnManel(Point2D startingPosition, boolean killed){
+		Manel deadManel = manel;
+		System.out.println("A apagar Manel:" + deadManel);
+		ImageGUI.getInstance().removeImage(deadManel);
+		int lives = 0;
+		int damageLevel = 0;
+		int health = 0;
+
+		if(killed){
+			lives = deadManel.getLives() - 1;
+			health = 100;
+			damageLevel = 25;
+
+		} else {
+			lives = deadManel.getLives();
+			damageLevel = deadManel.getDamage();
+			health = deadManel.getHealth();
+		}
+		
+		manel = new Manel(heroStartingPosition);
+		manel.setLives(lives);
+		manel.setDamageLevel(damageLevel);
+		manel.setHealth(health);
+
+		ImageGUI.getInstance().addImage(manel);
+	}
 }
