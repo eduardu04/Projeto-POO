@@ -39,4 +39,8 @@ public class Door extends GameObject implements  Interactable{
     public boolean isDeletable() {
         return false;
     }
+
+    public int getDoorStatus(){
+        return doorStatus;
+    }
 }

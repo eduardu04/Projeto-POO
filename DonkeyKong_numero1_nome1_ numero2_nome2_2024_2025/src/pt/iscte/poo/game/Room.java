@@ -19,6 +19,7 @@ public class Room {
 	private static String level;
 	private static List<Interactable> objetosInteractable;
 	private static List<Movable> objetosMoveis;
+	private static Door currentDoor;
 	private static List<Timable> objetosTimable;
 	private static List<GameObject> objetosFixos;
 	private int lastTickProcessedRoom;
@@ -49,17 +50,22 @@ public class Room {
 	public void processRoom(){
 		manelFall();
 		manelStatus();
-		
-		if(lastTickProcessedRoom % 5 == 0){
+
+		if(lastTickProcessedRoom % 3 == 0){
 			moveMovables();
 		}
-		if(lastTickProcessedRoom % 5 == 0)	{
+		if(lastTickProcessedRoom % 8 == 0)	{
 			attack();
 		}
-
+		
 		interact();
 		processTimables();
 		
+		if(currentDoor.getDoorStatus() == 0)	{
+			loadNextLevel = true;
+			System.out.println("A carregar o próximo nível!");
+		}
+	
 		lastTickProcessedRoom++;
 	}
 
@@ -339,9 +345,11 @@ public class Room {
 						break;
 						
 					case '0':
+					
 						Door door = new Door(new Point2D(j,i));
 						ImageGUI.getInstance().addImage(door);
 						objetosInteractable.add(door);
+						currentDoor=door;
 						break;
 						
 					case 'H':
@@ -393,20 +401,11 @@ public class Room {
 
 	}
 
-	public void respawnManel(int lives, Point2D startingPosition){
-		Manel deadManel = manel;
-		ImageGUI.getInstance().removeImage(deadManel);
-		
-		manel = new Manel(heroStartingPosition);
-		manel.setLives(lives);
-		
-		ImageGUI.getInstance().addImage(manel);
-		
-	}
+	
 
 	public void manelStatus() {	
 		if(manel.getHealth() < 0){
-			respawnManel(manel.getLives() - 1, heroStartingPosition);
+			respawnManel(heroStartingPosition,true);
 			
 		}
 
@@ -449,7 +448,7 @@ public class Room {
 			ImageGUI.getInstance().removeImage(i);
 		}
 	}
-
+//////////LALFAKFJAW
 	public void respawnManel(Point2D startingPosition, boolean killed){
 		Manel deadManel = manel;
 		ImageGUI.getInstance().removeImage(deadManel);
