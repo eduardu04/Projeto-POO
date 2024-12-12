@@ -33,7 +33,7 @@ public class Room {
 		manelFall();
 		manelStatus();
 		
-		if(lastTickProcessedRoom % 3 == 0){
+		if(lastTickProcessedRoom % 5 == 0){
 			moveMovables();
 		}
 		if(lastTickProcessedRoom % 5 == 0)	{
@@ -69,7 +69,12 @@ public class Room {
 						objetosInteractable.remove(i);
 					}
 			} else {
-			i.move(randomPossibleDirection(i));
+				try {
+					i.move(randomPossibleDirection(i));
+				} catch (Exception IndexOutOfBoundsException) {
+					// caso nao haja direção pra ir
+				}
+			
 			}
 		}
 	}
@@ -128,10 +133,10 @@ public class Room {
 	}
 
 	public boolean canInteract(Interactable i) {
-		Point2D manelPosition = manel.getPosition();
-		Point2D objectPosition = i.getPosition();
 		
-		if (isTrap(objectPosition)) {
+		Point2D objectPosition = i.getPosition(); 
+		
+		if (i.getName()=="Trap") {
 			Point2D manelGround = manel.getPosition().plus(new Vector2D(0, 1));
 
 			if (manelGround.equals(objectPosition)) {
@@ -139,8 +144,26 @@ public class Room {
 				return true;
 			}
 		}
+		if (i.getName()=="DonkeyKong"&& arroundManel(i)) {
+			System.out.println("Atacando macaco");
+			return true;
 
-		return manelPosition.equals(objectPosition);
+			
+		}
+
+		return manel.getPosition().equals(objectPosition);
+	}
+
+	public boolean arroundManel(Interactable i){
+		Point2D down = manel.getPosition().plus(new Vector2D(0, 1));
+		Point2D up = manel.getPosition().plus(new Vector2D(0, -1));
+		Point2D right = manel.getPosition().plus(new Vector2D(1, 0));
+		Point2D left = manel.getPosition().plus(new Vector2D(-1, 0));
+		
+		if(down.equals(i.getPosition())|| up.equals(i.getPosition())||right.equals(i.getPosition())||left.equals(i.getPosition())){
+			return true;
+		}
+		return false;
 	}
 
 	public void deleteObject(Point2D posAt) {
@@ -149,11 +172,14 @@ public class Room {
 	}
 	
 	public Direction randomPossibleDirection(Movable ob){
-		Direction d = Direction.random();
-		while(!canMove(ob,d)){
-			d = Direction.random();
+		List<Direction> possDirections = new ArrayList<>();
+		for(Direction d : Direction.values()){
+			if(canMove(ob, d)){
+				possDirections.add(d);
+			}
 		}
-		return d;
+		
+		return possDirections.get((int)(Math.random()*possDirections.size()));
 	}
 
 	public static Room readRoomFile(File f) {
@@ -188,15 +214,19 @@ public class Room {
 
 	public boolean canMove(Movable ob, Direction d){
 		Point2D nextPosition = ob.getPosition().plus(d.asVector());
-		if(insideMap(nextPosition) && !isBlock(nextPosition)){
+		if(insideMap(nextPosition) && !isBlock(nextPosition) && !isDonkeyKong(nextPosition) && !manel.getPosition().equals(nextPosition)){
+
 			if(d.name()=="UP" && !isStairs(ob.getPosition())){//Caso o objeto nao esteja numa escada não pode subir de posição ou seja "voar"!
 				return false;
 			}
+			
 			return true;
 		}
 		
 		return false;
 	}
+
+
 
 	public boolean isBlock(Point2D p){
 		char c = matrixRoom[p.getY()][p.getX()];
@@ -205,6 +235,18 @@ public class Room {
 		}
 		return false;
 	}
+
+	public boolean isDonkeyKong(Point2D p){//método para saber se naquele ponto está um gorila
+		for(Movable i : objetosMoveis){
+			if(i.getName()=="DonkeyKong"){
+				if(i.getPosition().equals(p)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public boolean isStairs(Point2D p){
 		char c = matrixRoom[p.getY()][p.getX()];
 		if(c == 'S'){

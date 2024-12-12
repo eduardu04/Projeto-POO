@@ -2,6 +2,7 @@ package objects;
 
 
 
+import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
@@ -32,11 +33,21 @@ public class DonkeyKong extends GameObject implements Movable, Interactable, Liv
 
     @Override
     public boolean isDeletable(){
+
         return health <= 0;
     }
 
     public void interact(Manel manel) {
-        hurt(manel.getDamage());
+        if(getHealth()<=manel.getDamage()){
+            hurt(manel.getDamage());
+            ImageGUI.getInstance().setStatusMessage("Donkey Kong was Killed!");
+        }else{
+            hurt(manel.getDamage());
+            ImageGUI.getInstance().setStatusMessage("Donkey Kong was atacked! Life: "+ getHealth()+"/100");
+        }
+        
+        
+
     }
 
     @Override
