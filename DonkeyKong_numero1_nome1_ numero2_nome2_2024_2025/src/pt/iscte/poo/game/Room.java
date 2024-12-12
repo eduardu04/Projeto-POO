@@ -32,11 +32,6 @@ public class Room {
 		this.levelNum = levelNum;
 		level = "room" + levelNum + ".txt";
 
-		if(levelNum > 0){
-			clearPreviousLevel();
-			respawnManel(heroStartingPosition, false);
-		}
-
 		addFloor();
 		objetosInteractable = new ArrayList<>();
 		objetosMoveis = new ArrayList<>();
@@ -45,6 +40,11 @@ public class Room {
 		
 		System.out.println("A carregar nível: " + level);
 		readRoomFile(level);
+
+		if(levelNum > 0){
+			clearPreviousLevel();
+			respawnManel(heroStartingPosition, false);
+		}
 	}
 
 	public void processRoom(){
@@ -351,11 +351,14 @@ public class Room {
 						objetosInteractable.add(door);
 						currentDoor=door;
 						break;
-						
+					
+					
 					case 'H':
 						heroStartingPosition= new Point2D(j,i);
-						manel = new Manel(heroStartingPosition);
-						ImageGUI.getInstance().addImage(manel);
+						if(levelNum == 0){ 
+							manel = new Manel(heroStartingPosition);
+							ImageGUI.getInstance().addImage(manel);
+						}
 						break;
 						
 					case 'G':
@@ -448,9 +451,10 @@ public class Room {
 			ImageGUI.getInstance().removeImage(i);
 		}
 	}
-//////////LALFAKFJAW
+
 	public void respawnManel(Point2D startingPosition, boolean killed){
 		Manel deadManel = manel;
+		System.out.println("A apagar Manel:" + deadManel);
 		ImageGUI.getInstance().removeImage(deadManel);
 		int lives = 0;
 		int damageLevel = 0;
