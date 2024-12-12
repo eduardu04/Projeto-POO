@@ -336,12 +336,7 @@ public class Room {
 							objetosInteractable.add(bife);  
 							objetosTimable.add(bife);  
 							break;
-							
-						case 'F':
-							Flag flag  = new Flag(new Point2D(j,i));
-							ImageGUI.getInstance().addImage(flag); 
-							objetosInteractable.add(flag);
-							
+				
 						default:
 							break;
 					}
@@ -390,18 +385,7 @@ public class Room {
 		ImageGUI.getInstance().addImage(manel);
 	}
 	
-	public static void teleportManel(Point2D point) {
-		Manel newManel = new Manel(point);
-		newManel.setLives(manel.getLives());
-		newManel.setDamageLevel(manel.getDamage());
-		newManel.setHealth(manel.getHealth());
-		
-		ImageGUI.getInstance().removeImage(manel);
-		
-		manel = newManel;
-		ImageGUI.getInstance().addImage(newManel);
-	}
-
+	
 	public void clearPreviousLevel(){	
 		clearMovables();
 		clearInteractables();
