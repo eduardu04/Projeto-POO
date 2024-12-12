@@ -32,6 +32,11 @@ public class Room {
 		this.levelNum = levelNum;
 		level = "room" + levelNum + ".txt";
 
+		if(levelNum > 0){
+			clearPreviousLevel();
+			respawnManel(heroStartingPosition, false);
+		}
+
 		addFloor();
 		objetosInteractable = new ArrayList<>();
 		objetosMoveis = new ArrayList<>();
@@ -40,11 +45,6 @@ public class Room {
 		
 		System.out.println("A carregar nível: " + level);
 		readRoomFile(level);
-
-		if(levelNum > 0){
-			clearPreviousLevel();
-			respawnManel(heroStartingPosition, false);
-		}
 	}
 
 	public void processRoom(){
@@ -330,11 +330,13 @@ public class Room {
 				switch (matrixRoom[i][j]) {
 					case 'W':			
 						fixo = new Wall(new Point2D(j,i));
+						objetosFixos.add(fixo);
 						ImageGUI.getInstance().addImage(fixo);
 						break;
 					
 					case 'S':
 						fixo = new Stairs(new Point2D(j,i));
+						objetosFixos.add(fixo);
 						ImageGUI.getInstance().addImage(fixo);
 						break;
 						
