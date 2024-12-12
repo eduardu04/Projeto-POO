@@ -15,18 +15,35 @@ public class Room {
 	
 	private static Point2D heroStartingPosition;
 	private static Manel manel;
-	private static int level;
 	private static char[][] matrixRoom;
+	private static String level;
 	private static List<Interactable> objetosInteractable;
 	private static List<Movable> objetosMoveis;
 	private static List<Timable> objetosTimable;
+	private static List<GameObject> objetosFixos;
 	private int lastTickProcessedRoom;
+	private boolean loadNextLevel=false;
+	private static int levelNum;
 	
-	public Room() {
+	
+
+	public Room(int levelNum) {
+		this.levelNum = levelNum;
+		level = "room" + levelNum + ".txt";
+
+		if(levelNum > 0){
+			clearPreviousLevel();
+			respawnManel(heroStartingPosition, false);
+		}
+
 		addFloor();
 		objetosInteractable = new ArrayList<>();
 		objetosMoveis = new ArrayList<>();
 		objetosTimable = new ArrayList<>();
+		objetosFixos = new ArrayList<>();
+		
+		System.out.println("A carregar nível: " + level);
+		readRoomFile(level);
 	}
 
 	public void processRoom(){
@@ -182,26 +199,29 @@ public class Room {
 		return possDirections.get((int)(Math.random()*possDirections.size()));
 	}
 
-	public static Room readRoomFile(File f) {
-		Room sala = new Room();
-		try {
-			//scanear mapa
-			Scanner sc = new Scanner(f);
-			sala.level = Integer.valueOf(sc.nextLine().charAt(1))-48;
-			String letras = "";
-			while(sc.hasNext()){
-				letras+=sc.nextLine();
+	public void readRoomFile(String f) {	
+		String levelPath = "rooms/" + f;
+		File file = new File(levelPath);		
+		System.out.println("A ler ficheiro: " + levelPath);
+		
+		try (Scanner sc = new Scanner(file)) { 
+			if(levelNum != 2){
+				level = sc.nextLine(); 
 			}
-			matrixRoom=stringToMatrix(letras);
-			loadMap();//carrega o mapa da mATRIxroom para o mapa mesmo
+
+			String letras = "";
+
+			while (sc.hasNextLine()) {
+				letras += sc.nextLine();
+			}
+			
+			matrixRoom = stringToMatrix(letras); 
+			loadMap(); 
 			sc.close();
-			
-			
-		} catch (FileNotFoundException FileNotFoundException) {
-			System.err.println("Erroooo");
+		} catch (FileNotFoundException e) {
+			System.err.println("Ficheiro não encontrado! " + levelPath);
 		}
-		System.out.println("Nível: "+sala.level);
-		return sala;
+		
 	}
 
 	public static void addFloor(){
@@ -391,5 +411,68 @@ public class Room {
 		}
 
 		ImageGUI.getInstance().setStatusMessage("Vidas: " + manel.getLives() + "  Saúde: " + manel.getHealth() +  "  Dano: " + manel.getDamage());
+	}
+
+	public boolean getLoadNextLevel(){
+		return loadNextLevel;
+	}
+
+	public void clearPreviousLevel(){	
+		clearMovables();
+		clearInteractables();
+		clearMap();
+	}
+
+	public void clearMovables(){
+		Iterator<Movable> iterator = objetosMoveis.iterator();
+
+		while(iterator.hasNext()) {
+			Movable i = iterator.next();
+			ImageGUI.getInstance().removeImage(i);
+		}
+	}
+
+	public void clearInteractables(){
+		Iterator<Interactable> iterator = objetosInteractable.iterator();
+
+		while(iterator.hasNext()) {
+			Interactable i = iterator.next();
+			ImageGUI.getInstance().removeImage(i);
+		}
+	}
+
+	public void clearMap(){
+		Iterator<GameObject> iterator = objetosFixos.iterator();
+
+		while(iterator.hasNext()){
+			GameObject i = iterator.next();
+			ImageGUI.getInstance().removeImage(i);
+		}
+	}
+
+	public void respawnManel(Point2D startingPosition, boolean killed){
+		Manel deadManel = manel;
+		ImageGUI.getInstance().removeImage(deadManel);
+		int lives = 0;
+		int damageLevel = 0;
+		int health = 0;
+
+		if(killed){
+			lives = deadManel.getLives() - 1;
+			health = 100;
+			damageLevel = 25;
+
+		} else {
+			lives = deadManel.getLives();
+			damageLevel = deadManel.getDamage();
+			health = deadManel.getHealth();
+		}
+		
+		manel = new Manel(heroStartingPosition);
+		manel.setLives(lives);
+		manel.setDamageLevel(damageLevel);
+		manel.setHealth(health);
+
+		ImageGUI.getInstance().addImage(manel);
 	}
 }

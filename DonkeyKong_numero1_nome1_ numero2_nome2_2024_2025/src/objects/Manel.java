@@ -38,6 +38,10 @@ public class Manel extends GameObject implements Movable, Living{
 	public int getDamage(){
 		return damageLevel;
 	}
+
+	public void setDamageLevel(int damage){
+		this.damageLevel=damage;
+	}
 	@Override
 	public int getHealth() {
 		return health;
