@@ -49,6 +49,14 @@ public class Trap extends GameObject implements Interactable{
 		return false;
 	}
 
+	@Override
+	public boolean isInterectable(GameObject obj) {
+		if(obj.getName().equals("JumpMan")){
+            return true;
+        }//pra ja so isto
+        return false;
+	}
+
 	
 
 }

@@ -92,7 +92,6 @@ public class Room {
 						if(insideMap(nextPoint)){
 							i.move(Direction.DOWN);
 						}else{
-							System.out.println("A proxima direcao esta fora do mapa");
 							deleteObject(i.getPosition());
 							iterator.remove();
 							objetosInteractable.remove(i);
@@ -109,8 +108,20 @@ public class Room {
 		}
 	
 		public void processTimables(){
-			for(Timable i : objetosTimable){
+			Iterator<Timable> iterator = objetosTimable.iterator();
+			while(iterator.hasNext()){
+				Timable i = iterator.next();
 				i.processTick();
+
+				if(i.hasChanged()&& i.getName().equals("Bomb")){
+					explodeBomb(i);
+					deleteObject(i.getPosition());
+					iterator.remove();
+					objetosInteractable.remove(i);
+
+				}
+
+				
 			}
 		}
 	
@@ -119,7 +130,7 @@ public class Room {
 		
 			while (iterator.hasNext()) {
 				Interactable i = iterator.next();
-				if (canInteract(i)) {
+				if (canInteract(i) && i.isInterectable(manel)) {
 					i.interact(manel);
 					System.out.println("A interagir com objeto: " + i.getName());
 	
@@ -128,12 +139,18 @@ public class Room {
 						iterator.remove();
 						objetosMoveis.remove(i);	
 					}
+					
 				}
+				
+				
+				
 				
 			}
 	
 			
 		}
+
+		
 		
 		public void attack(){
 			if(randomDonkeyIndex()!= -1){
@@ -176,9 +193,17 @@ public class Room {
 			if (i.getName()=="DonkeyKong"&& arroundManel(i)) {
 				System.out.println("Atacando macaco");
 				return true;
-	
 				
 			}
+			if (i.getName().equals("Bomb")&& manel.hasBomb()&&i.getPosition().equals(manel.getPosition())) {
+				System.out.println("O manel já tem bomba");
+				return false;
+				
+			}
+			
+			
+
+			
 	
 			return manel.getPosition().equals(objectPosition);
 		}
@@ -196,8 +221,15 @@ public class Room {
 		}
 	
 		public void deleteObject(Point2D posAt) {
-			ImageTile tile = findObjectByPoint(posAt);
-			ImageGUI.getInstance().removeImage(tile); 	
+			try {
+				ImageTile tile = findObjectByPoint(posAt);
+				ImageGUI.getInstance().removeImage(tile); 
+			} catch (IllegalArgumentException e) {
+				// TODO: handle exception
+			}
+			
+			
+			
 		}
 		
 		public Direction randomPossibleDirection(Movable ob){
@@ -246,7 +278,7 @@ public class Room {
 	
 		public boolean canMove(Movable ob, Direction d){
 			Point2D nextPosition = ob.getPosition().plus(d.asVector());
-			if(insideMap(nextPosition) && !isBlock(nextPosition) && !isDonkeyKong(nextPosition) && !manel.getPosition().equals(nextPosition)){
+			if(insideMap(nextPosition) && !isBlock(nextPosition) && !isActivatedBomb(nextPosition) &&!isDonkeyKong(nextPosition) && !manel.getPosition().equals(nextPosition)){
 	
 				if(d.name()=="UP" && !isStairs(ob.getPosition())){//Caso o objeto nao esteja numa escada não pode subir de posição ou seja "voar"!
 					return false;
@@ -257,12 +289,24 @@ public class Room {
 			
 			return false;
 		}
+
+		public boolean isActivatedBomb(Point2D p){// retorna true se naquela posição tem uma bomba ativada
+			for(Timable t : objetosTimable){
+				
+				if(t.getName().equals("Bomb")&& t.getPosition()==p){
+					System.out.println(("é bomba aseguir"));
+					return true;
+				}
+			}
+			return false;
+		}
 	
 	
 	
 		public boolean isBlock(Point2D p){
 			char c = matrixRoom[p.getY()][p.getX()];
-			if(c== 'W'||c== 't'|c== 'h'){
+			if(c== 'W'||c== 't'|c== 'h'|| c=='P'){
+				
 				return true;
 			}
 			return false;
@@ -309,6 +353,19 @@ public class Room {
 				moveManel(Direction.DOWN);
 			}
 		}
+
+		public void manelDropBomb(){
+			if(manel.hasBomb()){
+				Bomb b = manel.getManelBomb();
+				manel.dropBomb();
+				System.out.println("Bomba a contar em "+ b.getPosition().toString());
+				ImageGUI.getInstance().addImage(b);
+				objetosTimable.add(b); 
+				objetosInteractable.add(b); 
+			}
+			
+
+		}
 	
 		public boolean insideMap(Point2D p){
 			if(p.getX()==-1||p.getX()==10||p.getY()==-1||p.getY()==10){
@@ -329,7 +386,6 @@ public class Room {
 		public static void loadMap(){
 			GameObject fixo;
 			Interactable interactable;
-			Movable movel;
 	
 			for(int i = 0; i != 10;i++){
 				for(int j = 0; j != 10; j++){
@@ -396,15 +452,20 @@ public class Room {
 							objetosInteractable.add(bife);  
 							objetosTimable.add(bife);  
 							break;
+
+						case 'B':
+							Bomb bomb = new Bomb(new Point2D(j,i));	
+							ImageGUI.getInstance().addImage(bomb); 
+							objetosInteractable.add(bomb);  
+							objetosTimable.add(bomb);  
+							break;
 	
 						case 'P':
 							Princesa newPrincesa = new Princesa(new Point2D (j,i));
 							princesa = newPrincesa;
-						ImageGUI.getInstance().addImage(newPrincesa);
-						objetosInteractable.add(newPrincesa);
+							ImageGUI.getInstance().addImage(newPrincesa);
+							objetosInteractable.add(newPrincesa);
 						break;
-
-				
 
 					default:
 						break;
@@ -417,6 +478,11 @@ public class Room {
 	
 	public ImageTile findObjectByPoint(Point2D p) {
 		for (ImageTile i : objetosInteractable) {
+			if (i.getPosition().equals(p)) {
+				return i;
+			}
+		}
+		for (ImageTile i : objetosTimable) {
 			if (i.getPosition().equals(p)) {
 				return i;
 			}
@@ -471,28 +537,90 @@ public class Room {
 
 	public void respawnManel(Point2D startingPosition, boolean killed){
 		Manel deadManel = manel;
-		System.out.println("A apagar Manel:" + deadManel);
+		System.out.println("A apagar Manel");
 		ImageGUI.getInstance().removeImage(deadManel);
 		int lives = 0;
 		int damageLevel = 0;
 		int health = 0;
+		Bomb bomba=null;
 
 		if(killed){
 			lives = deadManel.getLives() - 1;
 			health = 100;
 			damageLevel = 25;
+			bomba = deadManel.getManelBomb();
+			manel.getsBomb(bomba);
 
 		} else {
 			lives = deadManel.getLives();
 			damageLevel = deadManel.getDamage();
 			health = deadManel.getHealth();
+			
 		}
 		
 		manel = new Manel(heroStartingPosition);
 		manel.setLives(lives);
 		manel.setDamageLevel(damageLevel);
 		manel.setHealth(health);
+		
 
 		ImageGUI.getInstance().addImage(manel);
+	}
+
+	
+
+
+
+
+
+	public void explodeBomb(Timable b){
+		Point2D p = b.getPosition();
+		Point2D down = p.plus(new Vector2D(0, 1));
+		Point2D up = p.plus(new Vector2D(0, -1));
+		Point2D right = p.plus(new Vector2D(1, 0));
+		Point2D left = p.plus(new Vector2D(-1, 0));
+		deleteObjectsFromList(up);
+		deleteObjectsFromList(down);
+		deleteObjectsFromList(right);
+		deleteObjectsFromList(left);
+		deleteObjectsFromList(p);
+			
+		
+		
+	};
+
+
+	
+
+	public void deleteObjectsFromList(Point2D p){//apaga exceto escadas e blocos fixos
+		if(insideMap(p) && !isStairs(p)&& !isBlock(p) ){
+			deleteObject(p);
+			//deleteFromListInteractable(p);
+			//deleteFromListMovable(p);
+
+		}
+
+	}
+
+	public void deleteFromListInteractable(Point2D p){
+		int i = 0;
+		for(Interactable it : objetosInteractable){
+			if(it.getPosition().equals(p)){
+				objetosInteractable.remove(i);
+				
+			}
+			i++;
+		}
+	}
+
+	public void deleteFromListMovable(Point2D p){
+		int i = 0;
+		for(Movable it : objetosMoveis){
+			if(it.getPosition().equals(p)){
+				objetosMoveis.remove(i);
+				
+			}
+			i++;
+		}
 	}
 }

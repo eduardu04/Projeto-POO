@@ -26,5 +26,13 @@ public class Sword extends GameObject implements Interactable{
 	public void interact(Manel manel) {
 		manel.giveSword();
 	}
+
+    @Override
+    public boolean isInterectable(GameObject obj) {
+        if(obj.getName().equals("JumpMan")){
+            return true;
+        }//pra ja so isto
+        return false;
+    }
     
 }

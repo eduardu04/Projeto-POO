@@ -64,4 +64,12 @@ public class DonkeyKong extends GameObject implements Movable, Interactable, Liv
     public void hurt(int damage) {
         health-= damage;
     }
+
+    @Override
+    public boolean isInterectable(GameObject obj) {
+        if(obj.getName().equals("JumpMan")){
+            return true;
+        }//pra ja so isto
+        return false;
+    }
 }

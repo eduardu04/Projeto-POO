@@ -43,4 +43,12 @@ public class Door extends GameObject implements  Interactable{
     public int getDoorStatus(){
         return doorStatus;
     }
+
+    @Override
+    public boolean isInterectable(GameObject obj) {
+        if(obj.getName().equals("JumpMan")){
+            return true;
+        }
+        return false;
+    }
 }

@@ -31,6 +31,14 @@ public class Princesa extends GameObject implements Interactable    {
 
     public boolean getIsSaved(){
         return isSaved;
+    }
+
+    @Override
+    public boolean isInterectable(GameObject obj) {
+        if(obj.getName().equals("JumpMan")){
+            return true;
+        }//pra ja so isto
+        return false;
     }    
 
 

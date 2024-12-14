@@ -53,4 +53,23 @@ public class Bife extends GameObject implements Interactable, Timable{
 		ticks++;
 	}
 
+	@Override
+	public boolean isInterectable(GameObject obj) {
+		if(obj.getName().equals("JumpMan")){
+            return true;
+        }//pra ja so isto
+        return false;
+	}
+
+	@Override
+	public boolean hasChanged() {
+		return isRotten;
+	}
+
+	
+
+	
+
+	
+
 }
