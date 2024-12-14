@@ -495,7 +495,12 @@ public class Room {
 		if(manel.getHealth() < 0){
 			respawnManel(heroStartingPosition,true);
 		}
-		ImageGUI.getInstance().setStatusMessage("Vidas: " + manel.getLives() + "  Saúde: " + manel.getHealth() +  "  Dano: " + manel.getDamage());
+		if(manel.hasBomb()){
+			ImageGUI.getInstance().setStatusMessage("Vidas: " + manel.getLives() + "  Saúde: " + manel.getHealth() +  "  Dano: " + manel.getDamage()+ "  💣");
+		}else{
+			ImageGUI.getInstance().setStatusMessage("Vidas: " + manel.getLives() + "  Saúde: " + manel.getHealth() +  "  Dano: " + manel.getDamage());
+		}
+		
 	}
 
 	public boolean getLoadNextLevel(){
@@ -542,14 +547,12 @@ public class Room {
 		int lives = 0;
 		int damageLevel = 0;
 		int health = 0;
-		Bomb bomba=null;
 
 		if(killed){
 			lives = deadManel.getLives() - 1;
 			health = 100;
 			damageLevel = 25;
-			bomba = deadManel.getManelBomb();
-			manel.getsBomb(bomba);
+			
 
 		} else {
 			lives = deadManel.getLives();
