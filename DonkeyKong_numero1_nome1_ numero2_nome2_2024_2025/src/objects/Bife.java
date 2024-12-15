@@ -1,5 +1,6 @@
 package objects;
 
+import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Point2D;
 
 public class Bife extends GameObject implements Interactable, Timable{
@@ -54,7 +55,7 @@ public class Bife extends GameObject implements Interactable, Timable{
 	}
 
 	@Override
-	public boolean isInterectable(GameObject obj) {
+	public boolean isInterectable(ImageTile obj) {
 		if(obj.getName().equals("JumpMan")){
             return true;
         }//pra ja so isto

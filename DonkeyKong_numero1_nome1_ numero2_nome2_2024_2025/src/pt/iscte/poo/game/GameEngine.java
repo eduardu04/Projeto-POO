@@ -39,7 +39,6 @@ public class GameEngine implements Observer {
 
 		if(currentRoom.getLoadNextLevel()){	
 			if(levelNum == 2){
-				System.out.println("Jogo completado! Parabéns");
 				return;
 			}
 			levelNum++;

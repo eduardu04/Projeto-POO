@@ -130,10 +130,9 @@ public class Room {
 		
 			while (iterator.hasNext()) {
 				Interactable i = iterator.next();
-				if (canInteract(i) && i.isInterectable(manel)) {
+				if (canInteract(i)) {
 					i.interact(manel);
 					System.out.println("A interagir com objeto: " + i.getName());
-	
 					if(i.isDeletable())	{  
 						deleteObject(i.getPosition());
 						iterator.remove();
@@ -141,6 +140,7 @@ public class Room {
 					}
 					
 				}
+				
 				
 				
 				
@@ -225,7 +225,7 @@ public class Room {
 				ImageTile tile = findObjectByPoint(posAt);
 				ImageGUI.getInstance().removeImage(tile); 
 			} catch (IllegalArgumentException e) {
-				// TODO: handle exception
+				
 			}
 			
 			
@@ -278,7 +278,11 @@ public class Room {
 	
 		public boolean canMove(Movable ob, Direction d){
 			Point2D nextPosition = ob.getPosition().plus(d.asVector());
+			
 			if(insideMap(nextPosition) && !isBlock(nextPosition) && !isActivatedBomb(nextPosition) &&!isDonkeyKong(nextPosition) && !manel.getPosition().equals(nextPosition)){
+				if(ob.getName().equals("DonkeyKong")&&isDoor(nextPosition)){
+					return false;
+				}
 	
 				if(d.name()=="UP" && !isStairs(ob.getPosition())){//Caso o objeto nao esteja numa escada não pode subir de posição ou seja "voar"!
 					return false;
@@ -286,6 +290,7 @@ public class Room {
 				
 				return true;
 			}
+			
 			
 			return false;
 		}
@@ -598,8 +603,6 @@ public class Room {
 	public void deleteObjectsFromList(Point2D p){//apaga exceto escadas e blocos fixos
 		if(insideMap(p) && !isStairs(p)&& !isBlock(p) ){
 			deleteObject(p);
-			//deleteFromListInteractable(p);
-			//deleteFromListMovable(p);
 
 		}
 

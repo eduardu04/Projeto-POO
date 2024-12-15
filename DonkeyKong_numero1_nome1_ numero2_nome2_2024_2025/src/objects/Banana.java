@@ -1,5 +1,6 @@
 package objects;
 
+import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
@@ -41,12 +42,11 @@ public class Banana extends GameObject implements Interactable, Movable{
 	}
 
 	@Override
-	public boolean isInterectable(GameObject obj) {
+	public boolean isInterectable(ImageTile obj) {
 		if(obj.getName().equals("JumpMan")){
             return true;
         }//pra ja so isto
         return false;
 	}
-	
 	
 }

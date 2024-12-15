@@ -1,5 +1,6 @@
 package objects;
 
+import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
@@ -46,10 +47,10 @@ public class Bomb extends GameObject implements Interactable, Timable{
 	
 	@Override
 	public void interact(Manel manel) {
-		if(!isApanhada()) {
+		if(!isApanhada()&& !isLargada()) {
 			manel.getsBomb(this);
             apanhar();
-		} 
+		}
 	}
 
     public void interactWithOthers(Living m) {
@@ -71,7 +72,6 @@ public class Bomb extends GameObject implements Interactable, Timable{
             if(ticks==30){
                 explode();
             }
-            
             ticks++;
 		}
 		
@@ -108,7 +108,7 @@ public class Bomb extends GameObject implements Interactable, Timable{
     }
 
     @Override
-    public boolean isInterectable(GameObject obj) {
+    public boolean isInterectable(ImageTile obj) {
         if(!isLargada() && obj.getName().equals("JumpMan")){
             return true;
         }//pra ja so isto

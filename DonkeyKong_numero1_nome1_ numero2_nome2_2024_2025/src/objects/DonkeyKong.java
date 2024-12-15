@@ -3,6 +3,7 @@ package objects;
 
 
 import pt.iscte.poo.gui.ImageGUI;
+import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
@@ -65,8 +66,9 @@ public class DonkeyKong extends GameObject implements Movable, Interactable, Liv
         health-= damage;
     }
 
+
     @Override
-    public boolean isInterectable(GameObject obj) {
+    public boolean isInterectable(ImageTile obj) {
         if(obj.getName().equals("JumpMan")){
             return true;
         }//pra ja so isto
