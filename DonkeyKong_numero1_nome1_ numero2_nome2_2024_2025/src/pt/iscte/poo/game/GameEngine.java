@@ -35,12 +35,12 @@ public class GameEngine implements Observer {
 
 		if (ImageGUI.getInstance().wasKeyPressed()) {
 			int k = ImageGUI.getInstance().keyPressed();
-			//System.out.println("Keypressed " + k);
+			// System.out.println("Keypressed " + k);
 			if (Direction.isDirection(k)) {
-				//System.out.println("Direction! ");
+				// System.out.println("Direction! ");
 				currentRoom.moveManel(Direction.directionFor(k));
 			}
-			if(k==66){
+			if (k == 66) {
 				currentRoom.manelDropBomb();
 			}
 		}
@@ -49,41 +49,33 @@ public class GameEngine implements Observer {
 			processTick();
 		}
 
-		currentRoom.processRoom();	
-		if(savedPrincess==false){
-			ImageGUI.getInstance().update();
-		}
+		currentRoom.processRoom();
 
 		if (currentRoom.restartGame()) {
 			levelNum = 0;
+			ImageGUI.getInstance().clearImages();
 			currentRoom = new Room(levelNum);
 			lastTickProcessed = 0;
+			
 
 			ImageGUI.getInstance().setStatusMessage("Jogo reiniciado!");
 		}
-		
 
-		if(currentRoom.getLoadNextLevel()){	
-			if(levelNum == 2){
-				if(currentRoom.getPrincesa().isSaved()){//A princesa foi salva
-					savedPrincess=true;
-					score=new Score(ImageGUI.getInstance().getTicks(), LocalDateTime.now());
+		if (savedPrincess == false) {
+			ImageGUI.getInstance().update();
+		}
+
+		if (currentRoom.getLoadNextLevel()) {
+			if (levelNum == 2) {
+				if (currentRoom.getPrincesa().isSaved()) {// A princesa foi salva
+					savedPrincess = true;
+					score = new Score(ImageGUI.getInstance().getTicks(), LocalDateTime.now());
+					System.out.println("tou aquii");
 					updateScores();
-					System.out.println("O Primeiro da lista é "+ scores.get(0).getScoreTime());
+					System.out.println("O Primeiro da lista é " + scores.get(0).getScoreTime());
 					ImageGUI.getInstance().setStatusMessage("Princesa foi salva! BOM TRABALHO!!");
-					if(score.getScoreTime()<=top10.getLast().getScoreTime()){
-						ImageGUI.getInstance().showMessage("Parabens Salvaste a Princesa","Parece que ficaste no top 10! \n A tua pontuação: "+ score.getScoreTime()+"\n" +"\n"+"Top 10:" +"\n" +"\n"+"Pontos     Data     Hora"+"\n" +"\n"+scores.get(0)+"\n"+scores.get(1)+"\n"+scores.get(2)+"\n"+scores.get(3)+"\n"+scores.get(4)+"\n"+scores.get(5)+"\n"+scores.get(6)+"\n"+scores.get(7)+"\n"+scores.get(8)+"\n"+scores.get(9)+"\n"+"\n");
-					}else{
-						ImageGUI.getInstance().showMessage("Parabens Salvaste a Princesa","Parece que não ficaste no top 10! :((( \n A tua pontuação: "+ score.getScoreTime()+"\n" +"\n"+"Top 10:" +"\n" +"\n"+"Pontos     Data     Hora"+"\n" +"\n"+scores.get(0)+"\n"+scores.get(1)+"\n"+scores.get(2)+"\n"+scores.get(3)+"\n"+scores.get(4)+"\n"+scores.get(5)+"\n"+scores.get(6)+"\n"+scores.get(7)+"\n"+scores.get(8)+"\n"+scores.get(9)+"\n"+"\n");
+					ImageGUI.getInstance().dispose();
 
-					}
-					
-					System.exit(1);
-					
-
-					
-					
-					
 				}
 				return;
 			}
@@ -98,7 +90,7 @@ public class GameEngine implements Observer {
 		lastTickProcessed++;
 	}
 
-	private void updateScores(){
+	private void updateScores() {
 		loadScores();
 		scores.add(score);
 		scores.sort((a,b)-> a.getScoreTime()-b.getScoreTime());
@@ -113,44 +105,41 @@ public class GameEngine implements Observer {
 				writer.println(s.toString());
 			}
 
-            writer.close();
+			writer.close();
 
-        } catch (FileNotFoundException e) {
-            
-            System.out.println("Erro ao escrever no ficheiro scores.txt");
-        }
+		} catch (FileNotFoundException e) {
 
-			
-			
+			System.out.println("Erro ao escrever no ficheiro scores.txt");
+		}
+
 	}
 
-	private void loadScores(){
+	private void loadScores() {
 		String scorePath = "scores/scores.txt";
-			File file = new File(scorePath);		
-			
-			try (Scanner sc = new Scanner(file)) { 
-				while (sc.hasNextLine()) {
-					Score scoreString = Score.readScoreString(sc.nextLine());
-					scores.add(scoreString);
-				}
-				 
-				sc.close();
-			} catch (FileNotFoundException e) {
-				System.err.println("Ficheiro score.txt não encontrado! ");
+		File file = new File(scorePath);
+
+		try (Scanner sc = new Scanner(file)) {
+			while (sc.hasNextLine()) {
+				Score scoreString = Score.readScoreString(sc.nextLine());
+				scores.add(scoreString);
 			}
+
+			sc.close();
+		} catch (FileNotFoundException e) {
+			System.err.println("Ficheiro score.txt não encontrado! ");
+		}
 	}
 
-	public Room getCurrentRoom(){
+	public Room getCurrentRoom() {
 		return currentRoom;
 	}
 
-	public boolean princessSaved(){
+	public boolean princessSaved() {
 		return savedPrincess;
 	}
 
-	public static int getLastTickProcessed(){
+	public static int getLastTickProcessed() {
 		return lastTickProcessed;
 	}
 
-	
 }

@@ -1,0 +1,600 @@
+format 224
+"package" // package
+  revision 1
+  modified_by 2 "RSSL"
+  // class settings
+  
+  classdiagramsettings member_max_width 0 end
+  
+  classcompositediagramsettings end
+  
+  usecasediagramsettings end
+  
+  sequencediagramsettings end
+  
+  collaborationdiagramsettings end
+  
+  objectdiagramsettings end
+  
+  objectcompositediagramsettings end
+  
+  componentdiagramsettings
+   end
+  
+  deploymentdiagramsettings
+   end
+  
+  statediagramsettings
+   end
+  
+  activitydiagramsettings
+   end
+  
+  classview 128002 "POO"
+    
+    classdiagramsettings member_max_width 0 end
+    
+    classcompositediagramsettings end
+    
+    collaborationdiagramsettings end
+    
+    objectdiagramsettings end
+    
+    objectcompositediagramsettings end
+    
+    sequencediagramsettings end
+    
+    statediagramsettings
+     end
+    
+    
+    activitydiagramsettings
+     end
+    classdiagram 128002 "POO"
+      classdiagramsettings draw_all_relations no member_max_width 0 end
+      size B
+    end
+
+    class 128002 "GameObject"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 128002 // <realization>
+	relation 128002 -_-|>
+	  a public
+	    classrelation_ref 128002 // <realization>
+	  b parent class_ref 128130 // Interactable
+      end
+
+      classrelation 128130 // <dependency>
+	relation 128130 -_->
+	  a public
+	    classrelation_ref 128130 // <dependency>
+	  b parent class_ref 128130 // Interactable
+      end
+
+      classrelation 128258 // <dependency>
+	relation 128258 -_->
+	  a public
+	    classrelation_ref 128258 // <dependency>
+	  b parent class_ref 128130 // Interactable
+      end
+
+      classrelation 128386 // <dependency>
+	relation 128386 -_->
+	  a public
+	    classrelation_ref 128386 // <dependency>
+	  b parent class_ref 128386 // Timable
+      end
+
+      classrelation 128514 // <dependency>
+	relation 128514 -_->
+	  a public
+	    classrelation_ref 128514 // <dependency>
+	  b parent class_ref 128258 // Movable
+      end
+
+      classrelation 128642 // <dependency>
+	relation 128642 -_->
+	  a public
+	    classrelation_ref 128642 // <dependency>
+	  b parent class_ref 128514 // Living
+      end
+
+      classrelation 132354 // <association>
+	relation 130562 ----
+	  a role_name "" private
+	    classrelation_ref 132354 // <association>
+	  b role_name "" private
+	    classrelation_ref 132482 // <association>
+      end
+
+      classrelation 133506 // <association>
+	relation_ref 131074 // <association>
+      end
+
+      classrelation 133762 // <association>
+	relation_ref 131202 // <association>
+      end
+
+      classrelation 134146 // <association>
+	relation 131458 ----
+	  a role_name "" private
+	    classrelation_ref 134146 // <association>
+	  b role_name "" private
+	    classrelation_ref 134274 // <association>
+      end
+
+      classrelation 134402 // <association>
+	relation 131586 ----
+	  a role_name "" private
+	    classrelation_ref 134402 // <association>
+	  b role_name "" private
+	    classrelation_ref 134530 // <association>
+      end
+
+      classrelation 134658 // <association>
+	relation 131714 ----
+	  a role_name "" private
+	    classrelation_ref 134658 // <association>
+	  b role_name "" private
+	    classrelation_ref 134786 // <association>
+      end
+
+      classrelation 134914 // <association>
+	relation 131842 ----
+	  a role_name "" private
+	    classrelation_ref 134914 // <association>
+	  b role_name "" private
+	    classrelation_ref 135042 // <association>
+      end
+
+      classrelation 135170 // <association>
+	relation 131970 ----
+	  a role_name "" private
+	    classrelation_ref 135170 // <association>
+	  b role_name "" private
+	    classrelation_ref 135298 // <association>
+      end
+
+      classrelation 135426 // <association>
+	relation 132098 ----
+	  a role_name "" private
+	    classrelation_ref 135426 // <association>
+	  b role_name "" private
+	    classrelation_ref 135554 // <association>
+      end
+
+      classrelation 135682 // <association>
+	relation 132226 ----
+	  a role_name "" private
+	    classrelation_ref 135682 // <association>
+	  b role_name "" private
+	    classrelation_ref 135810 // <association>
+      end
+
+      classrelation 135938 // <association>
+	relation 132354 ----
+	  a role_name "" private
+	    classrelation_ref 135938 // <association>
+	  b role_name "" private
+	    classrelation_ref 136066 // <association>
+      end
+    end
+
+    class 128130 "Interactable"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 128898 // <association>
+	relation_ref 128770 // <association>
+      end
+
+      classrelation 130050 // <association>
+	relation 129410 ----
+	  a role_name "" private
+	    classrelation_ref 130050 // <association>
+	  b role_name "" private
+	    classrelation_ref 130178 // <association>
+      end
+
+      classrelation 130946 // <association>
+	relation_ref 129794 // <association>
+      end
+
+      classrelation 131202 // <association>
+	relation_ref 129922 // <association>
+      end
+
+      classrelation 131970 // <association>
+	relation_ref 130306 // <association>
+      end
+
+      classrelation 133250 // <association>
+	relation_ref 130946 // <association>
+      end
+
+      classrelation 134018 // <association>
+	relation_ref 131330 // <association>
+      end
+
+      classrelation 136322 // <association>
+	relation_ref 132482 // <association>
+      end
+    end
+
+    class 128258 "Movable"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 129154 // <association>
+	relation_ref 128898 // <association>
+      end
+
+      classrelation 130306 // <association>
+	relation 129538 ----
+	  a role_name "" private
+	    classrelation_ref 130306 // <association>
+	  b role_name "" private
+	    classrelation_ref 130434 // <association>
+      end
+
+      classrelation 131714 // <association>
+	relation_ref 130178 // <association>
+      end
+
+      classrelation 132738 // <association>
+	relation_ref 130690 // <association>
+      end
+    end
+
+    class 128386 "Timable"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 130690 // <association>
+	relation_ref 129666 // <association>
+      end
+
+      classrelation 131458 // <association>
+	relation_ref 130050 // <association>
+      end
+    end
+
+    class 128514 "Living"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 132226 // <association>
+	relation_ref 130434 // <association>
+      end
+
+      classrelation 132994 // <association>
+	relation_ref 130818 // <association>
+      end
+    end
+
+    class 128642 "Banana"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 128770 // <association>
+	relation 128770 ----
+	  a role_name "" private
+	    classrelation_ref 128770 // <association>
+	  b role_name "" private
+	    classrelation_ref 128898 // <association>
+      end
+
+      classrelation 129026 // <association>
+	relation 128898 ----
+	  a role_name "" private
+	    classrelation_ref 129026 // <association>
+	  b role_name "" private
+	    classrelation_ref 129154 // <association>
+      end
+
+      classrelation 134786 // <association>
+	relation_ref 131714 // <association>
+      end
+    end
+
+    class 128898 "Bat"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 130178 // <association>
+	relation_ref 129410 // <association>
+      end
+
+      classrelation 130434 // <association>
+	relation_ref 129538 // <association>
+      end
+
+      classrelation 134530 // <association>
+	relation_ref 131586 // <association>
+      end
+    end
+
+    class 129026 "Bife"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 130562 // <association>
+	relation 129666 ----
+	  a role_name "" private
+	    classrelation_ref 130562 // <association>
+	  b role_name "" private
+	    classrelation_ref 130690 // <association>
+      end
+
+      classrelation 130818 // <association>
+	relation 129794 ----
+	  a role_name "" private
+	    classrelation_ref 130818 // <association>
+	  b role_name "" private
+	    classrelation_ref 130946 // <association>
+      end
+
+      classrelation 135554 // <association>
+	relation_ref 132098 // <association>
+      end
+    end
+
+    class 129154 "Bomb"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 131074 // <association>
+	relation 129922 ----
+	  a role_name "" private
+	    classrelation_ref 131074 // <association>
+	  b role_name "" private
+	    classrelation_ref 131202 // <association>
+      end
+
+      classrelation 131330 // <association>
+	relation 130050 ----
+	  a role_name "" private
+	    classrelation_ref 131330 // <association>
+	  b role_name "" private
+	    classrelation_ref 131458 // <association>
+      end
+
+      classrelation 135298 // <association>
+	relation_ref 131970 // <association>
+      end
+    end
+
+    class 129282 "DonkeyKong"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 131586 // <association>
+	relation 130178 ----
+	  a role_name "" private
+	    classrelation_ref 131586 // <association>
+	  b role_name "" private
+	    classrelation_ref 131714 // <association>
+      end
+
+      classrelation 131842 // <association>
+	relation 130306 ----
+	  a role_name "" private
+	    classrelation_ref 131842 // <association>
+	  b role_name "" private
+	    classrelation_ref 131970 // <association>
+      end
+
+      classrelation 132098 // <association>
+	relation 130434 ----
+	  a role_name "" private
+	    classrelation_ref 132098 // <association>
+	  b role_name "" private
+	    classrelation_ref 132226 // <association>
+      end
+
+      classrelation 135042 // <association>
+	relation_ref 131842 // <association>
+      end
+    end
+
+    class 129410 "Floor"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 132482 // <association>
+	relation_ref 130562 // <association>
+      end
+    end
+
+    class 129538 "Manel"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 132610 // <association>
+	relation 130690 ----
+	  a role_name "" private
+	    classrelation_ref 132610 // <association>
+	  b role_name "" private
+	    classrelation_ref 132738 // <association>
+      end
+
+      classrelation 132866 // <association>
+	relation 130818 ----
+	  a role_name "" private
+	    classrelation_ref 132866 // <association>
+	  b role_name "" private
+	    classrelation_ref 132994 // <association>
+      end
+
+      classrelation 134274 // <association>
+	relation_ref 131458 // <association>
+      end
+    end
+
+    class 129666 "Princesa"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 133122 // <association>
+	relation 130946 ----
+	  a role_name "" private
+	    classrelation_ref 133122 // <association>
+	  b role_name "" private
+	    classrelation_ref 133250 // <association>
+      end
+
+      classrelation 135810 // <association>
+	relation_ref 132226 // <association>
+      end
+    end
+
+    class 129794 "Stairs"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 133378 // <association>
+	relation 131074 ----
+	  a role_name "" private
+	    classrelation_ref 133378 // <association>
+	  b role_name "" private
+	    classrelation_ref 133506 // <association>
+      end
+    end
+
+    class 129922 "Sword"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 133634 // <association>
+	relation 131202 ----
+	  a role_name "" private
+	    classrelation_ref 133634 // <association>
+	  b role_name "" private
+	    classrelation_ref 133762 // <association>
+      end
+
+      classrelation 136194 // <association>
+	relation 132482 ----
+	  a role_name "" private
+	    classrelation_ref 136194 // <association>
+	  b role_name "" private
+	    classrelation_ref 136322 // <association>
+      end
+    end
+
+    class 130050 "Trap"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 133890 // <association>
+	relation 131330 ----
+	  a role_name "" private
+	    classrelation_ref 133890 // <association>
+	  b role_name "" private
+	    classrelation_ref 134018 // <association>
+      end
+
+      classrelation 136066 // <association>
+	relation_ref 132354 // <association>
+      end
+    end
+  end
+end
