@@ -5,6 +5,7 @@ import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
 public class Banana extends GameObject implements Interactable, Movable{
+	private boolean interactable = true;
 	
 	public Banana(Point2D initialPosition){
         super(initialPosition);
@@ -23,7 +24,10 @@ public class Banana extends GameObject implements Interactable, Movable{
 	
 	@Override
 	public void interact(Manel manel) {
-		manel.hurt(10);
+		if(isInteractable()){
+			manel.hurt(10);
+		}
+		
 	}
 
     @Override
@@ -41,12 +45,17 @@ public class Banana extends GameObject implements Interactable, Movable{
 		return super.equals(obj);
 	}
 
+
+	
+
 	@Override
-	public boolean isInterectable(ImageTile obj) {
-		if(obj.getName().equals("JumpMan")){
-            return true;
-        }//pra ja so isto
-        return false;
+	public boolean isInteractable() {
+		return interactable;
+	}
+
+	@Override
+	public void notInteractable() {
+		interactable=false;
 	}
 	
 }

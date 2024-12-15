@@ -5,6 +5,7 @@ import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
 public class Bomb extends GameObject implements Interactable, Timable{
+    private boolean interactable=true;
     private boolean largada=false;
     private boolean apanhada=false;
     private int ticks = 0;
@@ -34,6 +35,7 @@ public class Bomb extends GameObject implements Interactable, Timable{
 	
 	public void largar() {
 		largada=true;
+        notInteractable();
         System.out.println("Bomba largada");
 	}
 
@@ -47,17 +49,15 @@ public class Bomb extends GameObject implements Interactable, Timable{
 	
 	@Override
 	public void interact(Manel manel) {
-		if(!isApanhada()&& !isLargada()) {
-			manel.getsBomb(this);
-            apanhar();
-		}
+        if(isInteractable()){
+            if(!isApanhada()&& !isLargada()) {
+                manel.getsBomb(this);
+                apanhar();
+            }
+        }
+		
 	}
 
-    public void interactWithOthers(Living m) {
-		if(isLargada()) {
-			explode();
-		} 
-	}
 
     @Override
 	public int checkInnerClock() {
@@ -107,16 +107,20 @@ public class Bomb extends GameObject implements Interactable, Timable{
         super.position = p;	
     }
 
-    @Override
-    public boolean isInterectable(ImageTile obj) {
-        if(!isLargada() && obj.getName().equals("JumpMan")){
-            return true;
-        }//pra ja so isto
-        return false;
-    }
+    
 
     @Override
     public boolean hasChanged() {
         return hasExploded();
     }
+
+    @Override
+	public boolean isInteractable() {
+		return interactable;
+	}
+
+	@Override
+	public void notInteractable() {
+		interactable=false;
+	}
 }

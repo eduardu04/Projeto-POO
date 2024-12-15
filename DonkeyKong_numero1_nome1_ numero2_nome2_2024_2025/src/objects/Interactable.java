@@ -2,10 +2,11 @@ package objects;
 
 import pt.iscte.poo.gui.ImageTile;
 
-public interface Interactable extends ImageTile{   
+public interface Interactable extends ImageTile{  
 	void interact(Manel manel);
 	boolean isDeletable();
-	boolean isInterectable(ImageTile obj);
+	void notInteractable();
+	boolean isInteractable();
 	
 
 }

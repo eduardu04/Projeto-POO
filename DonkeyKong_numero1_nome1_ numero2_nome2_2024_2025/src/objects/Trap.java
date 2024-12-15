@@ -3,6 +3,7 @@ import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Point2D;
 
 public class Trap extends GameObject implements Interactable{
+	private boolean interactable=true;
 	private boolean isHidden = false;
 	private String name = "Trap";
 	
@@ -39,23 +40,33 @@ public class Trap extends GameObject implements Interactable{
 
 	@Override
 	public void interact(Manel manel) {
-		if(isHidden()){
-			setName("Trap");
+		if(isInteractable()){
+			if(isHidden()){
+				setName("Trap");
+			}
+			manel.hurt(10);
 		}
-		manel.hurt(10);
+		
 	}
 
 	@Override
 	public boolean isDeletable() {
+		if(!isInteractable()){
+			return true;
+		}
 		return false;
 	}
 
+
+
 	@Override
-	public boolean isInterectable(ImageTile obj) {
-		if(obj.getName().equals("JumpMan")){
-            return true;
-        }//pra ja so isto
-        return false;
+	public boolean isInteractable() {
+		return interactable;
+	}
+
+	@Override
+	public void notInteractable() {
+		interactable=false;
 	}
 
 	

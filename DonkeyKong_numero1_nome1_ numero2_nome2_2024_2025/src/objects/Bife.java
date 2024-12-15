@@ -4,6 +4,7 @@ import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Point2D;
 
 public class Bife extends GameObject implements Interactable, Timable{
+	private boolean interactable=true;
 	private boolean isRotten = false;
 	private int ticks = 0;
 	private String name = "GoodMeat";
@@ -29,11 +30,14 @@ public class Bife extends GameObject implements Interactable, Timable{
 	
 	@Override
 	public void interact(Manel manel) {
-		if(isRotten == true) {
-			manel.hurt(10);
-		} else {
-			manel.heal(25);
+		if(isInteractable()){
+			if(isRotten == true) {
+				manel.hurt(10);
+			} else {
+				manel.heal(25);
+			}
 		}
+		
 	}
 
         @Override
@@ -54,17 +58,20 @@ public class Bife extends GameObject implements Interactable, Timable{
 		ticks++;
 	}
 
-	@Override
-	public boolean isInterectable(ImageTile obj) {
-		if(obj.getName().equals("JumpMan")){
-            return true;
-        }//pra ja so isto
-        return false;
-	}
 
 	@Override
 	public boolean hasChanged() {
 		return isRotten;
+	}
+
+	@Override
+	public boolean isInteractable() {
+		return interactable;
+	}
+
+	@Override
+	public void notInteractable() {
+		interactable=false;
 	}
 
 	

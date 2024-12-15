@@ -27,6 +27,7 @@ public class Room {
 	private boolean loadNextLevel=false;
 	private static int levelNum;
 	private static Princesa princesa;
+
 		
 	
 		public Room(int levelNum) {
@@ -49,7 +50,7 @@ public class Room {
 		}
 	
 		public void processRoom(){
-			manelFall();
+			fall();
 			manelStatus();
 	
 			if(lastTickProcessedRoom % 3 == 0){
@@ -62,15 +63,12 @@ public class Room {
 			interact();
 			processTimables();
 			
-			if(currentDoor.getDoorStatus() == 0)	{
+			if(currentDoor.getDoorStatus() == 0&& levelNum<3)	{
 				loadNextLevel = true;
 				System.out.println("A carregar o próximo nível!");
 			}
 	
-			if(princesa != null && princesa.getIsSaved() == true){
-				ImageGUI.getInstance().setStatusMessage("Princesa foi salva! BOM TRABALHO!!");
-				return;
-			}
+			
 		
 			lastTickProcessedRoom++;
 		}
@@ -81,22 +79,50 @@ public class Room {
 			}
 			
 		}
+		public void move(Movable m, Direction d){
+			if(canMove(m,d)){
+				m.move(d);
+			}
+		}
 	
 		public void moveMovables(){ 
 			Iterator<Movable> iterator = objetosMoveis.iterator();
 		
 			while (iterator.hasNext()) {
 				Movable i = iterator.next();
-				if(i.getName() == "Banana"){
+				System.out.println(i.getName());
+				if(i.getName().equals("Banana")){
 					Point2D nextPoint = i.getPosition().plus(Direction.DOWN.asVector());
 						if(insideMap(nextPoint)){
 							i.move(Direction.DOWN);
 						}else{
-							deleteObject(i.getPosition());
+							deleteObject(i.getName(),i.getPosition());
 							iterator.remove();
 							objetosInteractable.remove(i);
+							
 						}
-				} else {
+				
+				} 
+				else if(i.getName().equals("Bat")){
+					System.out.println("Posição morcego:"+ i.getPosition().toString());
+					Point2D ground = i.getPosition().plus(Direction.DOWN.asVector());
+					if(isStairs(ground)){
+						System.out.println("O chão é escadas");
+						i.move(Direction.DOWN);
+					}else{
+						try {
+							Direction randomDirection = randomPossibleDirection(i);;
+							while(randomDirection.equals(Direction.UP)){
+								randomDirection = randomPossibleDirection(i);
+							}
+							i.move(randomDirection);
+
+						} catch (Exception IndexOutOfBoundsException) {
+							// caso nao haja direção pra ir
+						}
+					}
+				}
+				else {
 					try {
 						i.move(randomPossibleDirection(i));
 					} catch (Exception IndexOutOfBoundsException) {
@@ -115,7 +141,7 @@ public class Room {
 
 				if(i.hasChanged()&& i.getName().equals("Bomb")){
 					explodeBomb(i);
-					deleteObject(i.getPosition());
+					deleteObject("Bomb",i.getPosition());
 					iterator.remove();
 					objetosInteractable.remove(i);
 
@@ -130,11 +156,11 @@ public class Room {
 		
 			while (iterator.hasNext()) {
 				Interactable i = iterator.next();
-				if (canInteract(i)) {
+				if (canInteract(i)&& i.isInteractable()) {
 					i.interact(manel);
 					System.out.println("A interagir com objeto: " + i.getName());
 					if(i.isDeletable())	{  
-						deleteObject(i.getPosition());
+						deleteObject(i.getName(),i.getPosition());
 						iterator.remove();
 						objetosMoveis.remove(i);	
 					}
@@ -190,8 +216,13 @@ public class Room {
 					return true;
 				}
 			}
+		
 			if (i.getName()=="DonkeyKong"&& arroundManel(i)) {
 				System.out.println("Atacando macaco");
+				return true;
+				
+			}
+			if (i.getName()=="Princess"&& arroundManel(i)) {
 				return true;
 				
 			}
@@ -220,6 +251,18 @@ public class Room {
 			return false;
 		}
 	
+		public void deleteObject(String name,Point2D posAt) {
+			try {
+				ImageTile tile = findObjectByPointAndName(name,posAt);
+				ImageGUI.getInstance().removeImage(tile); 
+			} catch (IllegalArgumentException e) {
+				
+			}
+		
+			
+			
+		}
+
 		public void deleteObject(Point2D posAt) {
 			try {
 				ImageTile tile = findObjectByPoint(posAt);
@@ -227,7 +270,7 @@ public class Room {
 			} catch (IllegalArgumentException e) {
 				
 			}
-			
+		
 			
 			
 		}
@@ -351,13 +394,29 @@ public class Room {
 			}
 			return false;
 		}
-	
-		public void manelFall(){//Quando nao tem nada por baixo o Manel cai
-			Point2D manelGround = manel.getPosition().plus(new Vector2D(0, 1));
-			if(!isBlock(manelGround) && !isStairs(manelGround)){
-				moveManel(Direction.DOWN);
-			}
+
+		public Princesa getPrincesa(){
+			return princesa;
 		}
+	
+		public void fall(){//Quando nao tem nada por baixo cai
+			Point2D ground;
+			for(Movable m : objetosMoveis){
+				if(!m.getName().equals("Bat")&& !m.getName().equals("Banana")){//o unico que voa é o Morcego
+					ground = m.getPosition().plus(new Vector2D(0, 1));
+					if(!isBlock(ground) && !isStairs(ground)){
+						move(m, Direction.DOWN);
+					}
+				}
+				
+			}
+			ground= manel.getPosition().plus(new Vector2D(0, 1));
+			if(!isBlock(ground) && !isStairs(ground)){
+				move(manel, Direction.DOWN);
+			}
+			
+		}
+
 
 		public void manelDropBomb(){
 			if(manel.hasBomb()){
@@ -444,6 +503,12 @@ public class Room {
 							objetosMoveis.add(donkeyKong);
 							objetosInteractable.add(donkeyKong);
 							break;
+						case 'm':
+							Bat m = new Bat(new Point2D(j,i));
+							ImageGUI.getInstance().addImage(m);
+							objetosMoveis.add(m);
+							objetosInteractable.add(m);
+							break;
 					
 						case 's':
 							interactable = new Sword(new Point2D(j,i));
@@ -481,6 +546,21 @@ public class Room {
 		
 	}
 	
+	public ImageTile findObjectByPointAndName(String name, Point2D p) {
+		for (ImageTile i : objetosInteractable) {
+			if (i.getPosition().equals(p)&& i.getName().equals(name)) {
+				return i;
+			}
+		}
+		for (ImageTile i : objetosTimable) {
+			if (i.getPosition().equals(p) && i.getName().equals(name)) {
+				return i;
+			}
+		}
+		System.err.println("Objeto não encontrado na posição " + p);
+		return null;
+	}
+
 	public ImageTile findObjectByPoint(Point2D p) {
 		for (ImageTile i : objetosInteractable) {
 			if (i.getPosition().equals(p)) {
@@ -516,6 +596,8 @@ public class Room {
 		clearMovables();
 		clearInteractables();
 		clearMap();
+		ImageGUI.getInstance().clearImages();
+		
 	}
 
 	public void clearMovables(){
@@ -587,11 +669,11 @@ public class Room {
 		Point2D up = p.plus(new Vector2D(0, -1));
 		Point2D right = p.plus(new Vector2D(1, 0));
 		Point2D left = p.plus(new Vector2D(-1, 0));
-		deleteObjectsFromList(up);
-		deleteObjectsFromList(down);
-		deleteObjectsFromList(right);
-		deleteObjectsFromList(left);
-		deleteObjectsFromList(p);
+		deleteObjectsAndSetInactive(up);
+		deleteObjectsAndSetInactive(down);
+		deleteObjectsAndSetInactive(right);
+		deleteObjectsAndSetInactive(left);
+		deleteObjectsAndSetInactive(p);
 			
 		
 		
@@ -600,19 +682,21 @@ public class Room {
 
 	
 
-	public void deleteObjectsFromList(Point2D p){//apaga exceto escadas e blocos fixos
+	public void deleteObjectsAndSetInactive(Point2D p){//apaga exceto escadas e blocos fixos
 		if(insideMap(p) && !isStairs(p)&& !isBlock(p) ){
 			deleteObject(p);
+			setNotInteractableByPoint(p);
+
 
 		}
 
 	}
 
-	public void deleteFromListInteractable(Point2D p){
+	public void setNotInteractableByPoint(Point2D p){
 		int i = 0;
 		for(Interactable it : objetosInteractable){
 			if(it.getPosition().equals(p)){
-				objetosInteractable.remove(i);
+				it.notInteractable();
 				
 			}
 			i++;
@@ -629,4 +713,5 @@ public class Room {
 			i++;
 		}
 	}
+
 }

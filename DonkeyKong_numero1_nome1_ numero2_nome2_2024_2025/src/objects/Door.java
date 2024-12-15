@@ -3,6 +3,7 @@ import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Point2D;
 
 public class Door extends GameObject implements  Interactable{
+    private boolean interactable=true;
     private int doorStatus = -1;
     
     public Door(Point2D initialPosition){
@@ -45,11 +46,15 @@ public class Door extends GameObject implements  Interactable{
         return doorStatus;
     }
 
+
+
     @Override
-    public boolean isInterectable(ImageTile obj) {
-        if(obj.getName().equals("JumpMan")){
-            return true;
-        }
-        return false;
-    }
+	public boolean isInteractable() {
+		return interactable;
+	}
+
+	@Override
+	public void notInteractable() {
+		//a porta tem de ser sempre 
+	}
 }

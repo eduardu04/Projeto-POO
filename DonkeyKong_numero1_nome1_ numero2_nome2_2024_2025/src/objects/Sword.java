@@ -3,6 +3,7 @@ import pt.iscte.poo.gui.ImageTile;
 import pt.iscte.poo.utils.Point2D;
 
 public class Sword extends GameObject implements Interactable{
+    private boolean interactable=true;
 	
     public Sword(Point2D initialPosition){
         super(initialPosition);
@@ -25,15 +26,22 @@ public class Sword extends GameObject implements Interactable{
 
     @Override
 	public void interact(Manel manel) {
-		manel.giveSword();
+        if(isInteractable()){
+            manel.giveSword();
+        }
+		
 	}
 
+
+
     @Override
-    public boolean isInterectable(ImageTile obj) {
-        if(obj.getName().equals("JumpMan")){
-            return true;
-        }//pra ja so isto
-        return false;
-    }
+	public boolean isInteractable() {
+		return interactable;
+	}
+
+	@Override
+	public void notInteractable() {
+		interactable=false;
+	}
     
 }

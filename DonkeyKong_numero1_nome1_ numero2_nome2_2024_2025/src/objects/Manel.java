@@ -87,7 +87,7 @@ public class Manel extends GameObject implements Movable, Living{
 	public void dropBomb(){
 		if(hasBomb()){
 			manelsBomb.largar();
-			manelsBomb.setPosition(getPosition().plus(Direction.RIGHT.asVector()));
+			manelsBomb.setPosition(getPosition());
 			manelsBomb=null;
 		}
 			

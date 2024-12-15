@@ -8,6 +8,7 @@ import pt.iscte.poo.utils.Direction;
 import pt.iscte.poo.utils.Point2D;
 
 public class DonkeyKong extends GameObject implements Movable, Interactable, Living{
+    private boolean interactable=true;
     private int health = 60;
     private int damage = 35;
 
@@ -39,13 +40,16 @@ public class DonkeyKong extends GameObject implements Movable, Interactable, Liv
     }
 
     public void interact(Manel manel) {
-        if(getHealth()<=manel.getDamage()){
-            hurt(manel.getDamage());
-            ImageGUI.getInstance().setStatusMessage("Donkey Kong was Killed!");
-        }else{
-            hurt(manel.getDamage());
-            ImageGUI.getInstance().setStatusMessage("Donkey Kong was atacked! Life: "+ getHealth()+"/100");
+        if(isInteractable()){
+            if(getHealth()<=manel.getDamage()){
+                hurt(manel.getDamage());
+                ImageGUI.getInstance().setStatusMessage("Donkey Kong was Killed!");
+            }else{
+                hurt(manel.getDamage());
+                ImageGUI.getInstance().setStatusMessage("Donkey Kong was atacked! Life: "+ getHealth()+"/100");
+            }
         }
+        
         
         
 
@@ -67,11 +71,15 @@ public class DonkeyKong extends GameObject implements Movable, Interactable, Liv
     }
 
 
+
+
     @Override
-    public boolean isInterectable(ImageTile obj) {
-        if(obj.getName().equals("JumpMan")){
-            return true;
-        }//pra ja so isto
-        return false;
-    }
+	public boolean isInteractable() {
+		return interactable;
+	}
+
+	@Override
+	public void notInteractable() {
+		interactable=false;
+	}
 }
