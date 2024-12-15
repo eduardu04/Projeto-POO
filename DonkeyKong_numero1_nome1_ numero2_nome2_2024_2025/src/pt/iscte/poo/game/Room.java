@@ -28,26 +28,33 @@ public class Room {
 	private static int levelNum;
 	private static Princesa princesa;
 
+	
+
 		
 	
-		public Room(int levelNum) {
-			this.levelNum = levelNum;
-			level = "room" + levelNum + ".txt";
-	
-			if(levelNum > 0){
-				clearPreviousLevel();
+	public Room(int levelNum) {
+		this.levelNum = levelNum;
+		level = "room" + levelNum + ".txt";
+
+		if (levelNum > 0 || GameEngine.getLastTickProcessed() > 0) {
+			clearPreviousLevel();
+
+			if (GameEngine.getLastTickProcessed() > 0) {
+				respawnManel(heroStartingPosition, true);
+			} else {
 				respawnManel(heroStartingPosition, false);
 			}
-	
-			addFloor();
-			objetosInteractable = new ArrayList<>();
-			objetosMoveis = new ArrayList<>();
-			objetosTimable = new ArrayList<>();
-			objetosFixos = new ArrayList<>();
-			
-			System.out.println("A carregar nível: " + level);
-			readRoomFile(level);
 		}
+
+		addFloor();
+		objetosInteractable = new ArrayList<>();
+		objetosMoveis = new ArrayList<>();
+		objetosTimable = new ArrayList<>();
+		objetosFixos = new ArrayList<>();
+
+		System.out.println("A carregar nível: " + level);
+		readRoomFile(level);
+	}
 	
 		public void processRoom(){
 			fall();
@@ -72,6 +79,7 @@ public class Room {
 		
 			lastTickProcessedRoom++;
 		}
+
 	
 		public void moveManel(Direction d) {
 			if(canMove(manel,d)){
@@ -648,6 +656,7 @@ public class Room {
 			
 		}
 		
+		
 		manel = new Manel(heroStartingPosition);
 		manel.setLives(lives);
 		manel.setDamageLevel(damageLevel);
@@ -713,5 +722,13 @@ public class Room {
 			i++;
 		}
 	}
+
+	public boolean restartGame() {
+		if (manel.getLives() < 0) {
+		}
+		return false;
+	}
+
+	
 
 }

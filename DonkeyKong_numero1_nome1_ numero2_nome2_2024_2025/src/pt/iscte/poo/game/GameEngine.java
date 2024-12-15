@@ -20,7 +20,7 @@ public class GameEngine implements Observer {
 
 	private int levelNum = 0;
 	private Room currentRoom = new Room(levelNum);
-	private int lastTickProcessed = 0;
+	private static int lastTickProcessed = 0;
 	private Score score;
 	private List<Score> scores=new ArrayList<>();
 	private List<Score> top10;
@@ -52,6 +52,14 @@ public class GameEngine implements Observer {
 		currentRoom.processRoom();	
 		if(savedPrincess==false){
 			ImageGUI.getInstance().update();
+		}
+
+		if (currentRoom.restartGame()) {
+			levelNum = 0;
+			currentRoom = new Room(levelNum);
+			lastTickProcessed = 0;
+
+			ImageGUI.getInstance().setStatusMessage("Jogo reiniciado!");
 		}
 		
 
@@ -138,6 +146,10 @@ public class GameEngine implements Observer {
 
 	public boolean princessSaved(){
 		return savedPrincess;
+	}
+
+	public static int getLastTickProcessed(){
+		return lastTickProcessed;
 	}
 
 	
