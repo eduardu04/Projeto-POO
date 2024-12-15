@@ -23,6 +23,7 @@ public class GameEngine implements Observer {
 	private int lastTickProcessed = 0;
 	private Score score;
 	private List<Score> scores=new ArrayList<>();
+	private List<Score> top10;
 	private boolean savedPrincess=false;
 	
 	public GameEngine() {
@@ -62,8 +63,11 @@ public class GameEngine implements Observer {
 					updateScores();
 					System.out.println("O Primeiro da lista é "+ scores.get(0).getScoreTime());
 					ImageGUI.getInstance().setStatusMessage("Princesa foi salva! BOM TRABALHO!!");
-					if(score.getScoreTime()<=scores.getLast().getScoreTime()){
+					if(score.getScoreTime()<=top10.getLast().getScoreTime()){
 						ImageGUI.getInstance().showMessage("Parabens Salvaste a Princesa","Parece que ficaste no top 10! \n A tua pontuação: "+ score.getScoreTime()+"\n" +"\n"+"Top 10:" +"\n" +"\n"+"Pontos     Data     Hora"+"\n" +"\n"+scores.get(0)+"\n"+scores.get(1)+"\n"+scores.get(2)+"\n"+scores.get(3)+"\n"+scores.get(4)+"\n"+scores.get(5)+"\n"+scores.get(6)+"\n"+scores.get(7)+"\n"+scores.get(8)+"\n"+scores.get(9)+"\n"+"\n");
+					}else{
+						ImageGUI.getInstance().showMessage("Parabens Salvaste a Princesa","Parece que não ficaste no top 10! :((( \n A tua pontuação: "+ score.getScoreTime()+"\n" +"\n"+"Top 10:" +"\n" +"\n"+"Pontos     Data     Hora"+"\n" +"\n"+scores.get(0)+"\n"+scores.get(1)+"\n"+scores.get(2)+"\n"+scores.get(3)+"\n"+scores.get(4)+"\n"+scores.get(5)+"\n"+scores.get(6)+"\n"+scores.get(7)+"\n"+scores.get(8)+"\n"+scores.get(9)+"\n"+"\n");
+
 					}
 					
 					System.exit(1);
@@ -90,14 +94,13 @@ public class GameEngine implements Observer {
 		loadScores();
 		scores.add(score);
 		scores.sort((a,b)-> a.getScoreTime()-b.getScoreTime());
-		List<Score> top10 = scores;
+		top10 = scores;
 		if(scores.size()>=10){
-			top10=scores.subList(0,9);
+			top10=scores.subList(0,10);
 		}
 		try {
            
             PrintWriter writer = new PrintWriter(new File("scores/scores.txt")); // 'true' para acrescentar ao ficheiro
-
 			for(Score s : top10){
 				writer.println(s.toString());
 			}

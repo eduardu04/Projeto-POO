@@ -43,7 +43,7 @@ public class Score implements Comparator<Score>{
 
     @Override
     public String toString(){
-        System.out.println(12- String.valueOf(getScoreTime()).length());
+        System.out.println("+++"+emptyString(12- String.valueOf(getScoreTime()).length())+"+++");
         return getScoreTime() + emptyString(12- String.valueOf(getScoreTime()).length()) + getDateFormated();
     }
 
