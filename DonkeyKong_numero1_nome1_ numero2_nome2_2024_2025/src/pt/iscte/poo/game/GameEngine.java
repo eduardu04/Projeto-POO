@@ -59,11 +59,14 @@ public class GameEngine implements Observer {
 				if(currentRoom.getPrincesa().isSaved()){//A princesa foi salva
 					savedPrincess=true;
 					score=new Score(ImageGUI.getInstance().getTicks(), LocalDateTime.now());
-					System.out.println("tou aquii");
 					updateScores();
 					System.out.println("O Primeiro da lista é "+ scores.get(0).getScoreTime());
 					ImageGUI.getInstance().setStatusMessage("Princesa foi salva! BOM TRABALHO!!");
-					ImageGUI.getInstance().dispose();
+					if(score.getScoreTime()<=scores.getLast().getScoreTime()){
+						ImageGUI.getInstance().showMessage("Parabens Salvaste a Princesa","Parece que ficaste no top 10! \n A tua pontuação: "+ score.getScoreTime()+"\n" +"\n"+"Top 10:" +"\n" +"\n"+"Pontos     Data     Hora"+"\n" +"\n"+scores.get(0)+"\n"+scores.get(1)+"\n"+scores.get(2)+"\n"+scores.get(3)+"\n"+scores.get(4)+"\n"+scores.get(5)+"\n"+scores.get(6)+"\n"+scores.get(7)+"\n"+scores.get(8)+"\n"+scores.get(9)+"\n"+"\n");
+					}
+					
+					System.exit(1);
 					
 
 					

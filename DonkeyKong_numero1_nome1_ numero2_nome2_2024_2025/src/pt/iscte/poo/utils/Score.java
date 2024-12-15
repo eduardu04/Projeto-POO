@@ -34,7 +34,7 @@ public class Score implements Comparator<Score>{
 
     public static Score readScoreString(String s){
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        String[] scoreArray = s.split(" ");
+        String[] scoreArray = s.trim().split("\\s+");
         int scoree = Integer.valueOf(scoreArray[0]);
         LocalDateTime dataHoraFormatada = LocalDateTime.parse(scoreArray[1]+" "+scoreArray[2], formato);
         
@@ -43,7 +43,16 @@ public class Score implements Comparator<Score>{
 
     @Override
     public String toString(){
-        return getScoreTime() + " " + getDateFormated();
+        System.out.println(12- String.valueOf(getScoreTime()).length());
+        return getScoreTime() + emptyString(12- String.valueOf(getScoreTime()).length()) + getDateFormated();
+    }
+
+    public String emptyString(int n){
+        String s = "";
+        for(int i = 0; i != n;i++){
+            s+=" ";
+        }
+        return s;
     }
 
 
